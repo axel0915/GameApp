@@ -48,7 +48,7 @@ class _First_ScreenState extends State<First_Screen> {
                         shape: StadiumBorder()),
                   ),
                   Text(
-                    "Ja tens un compte?",
+                    "IEEEE AXEEL",
                     style: TextStyle(color: Colors.white),
                   )
                 ],
