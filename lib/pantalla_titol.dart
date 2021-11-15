@@ -32,7 +32,7 @@ class _First_ScreenState extends State<First_Screen> {
                 children: [
                   SizedBox(height: 100),
                   Text(
-                    "TITOL APLICACIÓ MÒBIL",
+                    "HOLAAAAAA",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 40,
