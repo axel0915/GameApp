@@ -32,7 +32,7 @@ class _First_ScreenState extends State<First_Screen> {
                 children: [
                   SizedBox(height: 100),
                   Text(
-                    "HOLAAAAAA",
+                    "ADIOS",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 40,
@@ -41,7 +41,7 @@ class _First_ScreenState extends State<First_Screen> {
                   SizedBox(height: 200),
                   ElevatedButton(
                     onPressed: () {},
-                    child: Text("Registra't", style: TextStyle(fontSize: 20)),
+                    child: Text("PATATA", style: TextStyle(fontSize: 20)),
                     style: ElevatedButton.styleFrom(
                         primary: Colors.grey[900],
                         padding: EdgeInsets.all(20),
