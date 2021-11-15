@@ -15,11 +15,13 @@ class _First_ScreenState extends State<First_Screen> {
         children: [
           Container(
             decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/home_screen.png"),
-                    colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.5), BlendMode.darken),
-                    fit: BoxFit.cover)),
+              image: DecorationImage(
+                image: AssetImage("assets/home_screen.png"),
+                colorFilter: ColorFilter.mode(
+                    Colors.blue.withOpacity(0.5), BlendMode.darken),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
           Align(
             alignment: Alignment.topCenter,
@@ -45,8 +47,10 @@ class _First_ScreenState extends State<First_Screen> {
                         padding: EdgeInsets.all(20),
                         shape: StadiumBorder()),
                   ),
-                  Text("Ja tens un compte?",
-                      style: TextStyle(color: Colors.white))
+                  Text(
+                    "Ja tens un compte?",
+                    style: TextStyle(color: Colors.white),
+                  )
                 ],
               ),
             ),
