@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projecte/pantalla_titol.dart';
+import 'package:projecte/Pantallas/pantalla_titol.dart';
 
 void main() {
   runApp(const MyApp());
