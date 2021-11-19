@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:projecte/Pantallas/pantalla_titol.dart';
+import 'package:projecte/Pantallas/FirstScreen.dart';
+import 'package:projecte/Pantallas/LibraryScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: First_Screen(),
+      home: LibraryScreen(),
     );
   }
 }
