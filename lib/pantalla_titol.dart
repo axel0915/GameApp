@@ -15,13 +15,11 @@ class _First_ScreenState extends State<First_Screen> {
         children: [
           Container(
             decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/home_screen.png"),
-                colorFilter: ColorFilter.mode(
-                    Colors.blue.withOpacity(0.5), BlendMode.darken),
-                fit: BoxFit.cover,
-              ),
-            ),
+                image: DecorationImage(
+                    image: AssetImage("assets/home_screen.png"),
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.5), BlendMode.darken),
+                    fit: BoxFit.cover)),
           ),
           Align(
             alignment: Alignment.topCenter,
@@ -32,7 +30,7 @@ class _First_ScreenState extends State<First_Screen> {
                 children: [
                   SizedBox(height: 100),
                   Text(
-                    "ADIOS",
+                    "TITOL APLICACIÓ MÒBIL",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 40,
@@ -41,16 +39,14 @@ class _First_ScreenState extends State<First_Screen> {
                   SizedBox(height: 200),
                   ElevatedButton(
                     onPressed: () {},
-                    child: Text("PATATA", style: TextStyle(fontSize: 20)),
+                    child: Text("Registra't", style: TextStyle(fontSize: 20)),
                     style: ElevatedButton.styleFrom(
                         primary: Colors.grey[900],
                         padding: EdgeInsets.all(20),
                         shape: StadiumBorder()),
                   ),
-                  Text(
-                    "IEEEE AXEEL",
-                    style: TextStyle(color: Colors.white),
-                  )
+                  Text("Ja tens un compte?",
+                      style: TextStyle(color: Colors.white))
                 ],
               ),
             ),
