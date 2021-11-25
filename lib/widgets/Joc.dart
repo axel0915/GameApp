@@ -1,25 +1,27 @@
 import 'dart:io';
 import 'dart:convert';
 
-
 class Plataforma {
   String nomPlataforma, companyiaplataforma;
-  int anyPlataforma;
+  int anyPlataforma; //La plataforma tindria imatges??
 
   Plataforma(this.nomPlataforma, this.companyiaplataforma, this.anyPlataforma);
 }
 
-
 class Joc extends Plataforma {
-  String nom, genere, descripcio, companyia;
+  String nom,
+      genere,
+      descripcio,
+      companyia,
+      imatge; //Com es faria per posar una imatge?? URL??
   int any;
 
   Joc(String np, String cp, int ap, this.nom, this.any, this.companyia,
-      this.descripcio, this.genere)
+      this.descripcio, this.genere, this.imatge)
       : super(np, cp, ap);
 
- //APARTAT JSON FIREBASE A FER:
- /* 
+  //APARTAT JSON FIREBASE A FER:
+  /* 
   Map<String, dynamic> toJson() => {
         'nomplataforma': nomPlataforma,
         'companyiaplataforma': companyiaplataforma,
