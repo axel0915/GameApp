@@ -92,7 +92,7 @@ class _SignUpState extends State<SignUp> {
                           fillColor: Colors.white, filled: true),
                       controller: controller_nom,
                     ),
-                    Spacer(),
+                    /*Spacer(),
                     StreamBuilder(
                       stream: FirebaseFirestore.instance
                           .doc("/Usuaris/ExYheH7yzBNlS8VpcWgzSGAdGnq2")
@@ -112,7 +112,7 @@ class _SignUpState extends State<SignUp> {
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         );
                       },
-                    ),
+                    ),*/
                   ],
                 ),
               ),
