@@ -38,14 +38,14 @@ class _LibraryScreenState extends State<LibraryScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 10),
+                  padding: const EdgeInsets.only(left: 10, top: 35),
                   child: Text(
                     (mode_favorit ? "Els meus favorits" : "Els meus jocs"),
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 30,
+                      fontSize: 25,
                     ),
                   ),
                 ),
@@ -59,13 +59,13 @@ class _LibraryScreenState extends State<LibraryScreen> {
                           });
                         },
                         child: Container(
-                          height: 100,
+                          height: 75,
                           decoration: BoxDecoration(
                             color: Colors.transparent,
                           ),
                           child: Icon(
                             (mode_favorit ? Icons.games_outlined : Icons.games),
-                            size: 40,
+                            size: 30,
                           ),
                         ),
                       ),
@@ -78,7 +78,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                           });
                         },
                         child: Container(
-                          height: 100,
+                          height: 75,
                           decoration: BoxDecoration(
                             color: Colors.transparent,
                           ),
@@ -86,7 +86,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                             (mode_favorit
                                 ? Icons.favorite
                                 : Icons.favorite_border),
-                            size: 40,
+                            size: 30,
                           ),
                         ),
                       ),
@@ -97,28 +97,65 @@ class _LibraryScreenState extends State<LibraryScreen> {
             ),
           ),
           Expanded(
-            child: ListView.separated(
-              itemCount: 10, //user.biblioteca.length
-              itemBuilder: (context, index) {
-                return ListTile(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  tileColor: Colors.white,
-                  title: Text("Hola"), //user.biblioteca[index].nom
-                  subtitle: Text("$index"), //user.biblioteca[index].companyia
-                );
-              },
-              separatorBuilder: (context, index) {
-                return Divider(
-                  thickness: 1,
-                  height: 5,
-                  indent: 72,
-                );
-              },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                child: ListView.separated(
+                  itemCount: 100, //user.biblioteca.length
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      tileColor: Colors.white,
+                      title: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Joc numero $index"),
+                      ), //user.biblioteca[index].nom
+                      trailing: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            child: Icon(Icons.delete_rounded),
+                            onTap: () {
+                              setState(() {});
+                            },
+                          ),
+                          Icon(
+                            Icons.favorite,
+                            color: Colors.red[900],
+                          )
+                        ],
+                      ),
+                      subtitle:
+                          Text("$index"), //user.biblioteca[index].companyia
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider(
+                      thickness: 1,
+                      height: 5,
+                      indent: 72,
+                    );
+                  },
+                ),
+              ),
             ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
+            child: Container(
+              height: 65,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(color: Colors.black, spreadRadius: 5, blurRadius: 5)
+                ],
+                color: Colors.grey[850],
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+            ),
           )
         ],
       ),
