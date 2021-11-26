@@ -64,6 +64,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                           child: Icon(
                             (mode_favorit ? Icons.games_outlined : Icons.games),
                             size: 30,
+                            color: Colors.grey,
                           ),
                         ),
                       ),
@@ -85,6 +86,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                                 ? Icons.favorite
                                 : Icons.favorite_border),
                             size: 30,
+                            color: Colors.grey,
                           ),
                         ),
                       ),
@@ -151,6 +153,35 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
+                ),
+              ),
+              child: Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Icon(
+                      Icons.home_rounded,
+                      color: Colors.grey,
+                      size: 35,
+                    ),
+                    /*SizedBox(
+                      width: 15, //
+                    ),*/
+                    Icon(
+                      Icons.grid_view_outlined,
+                      color: Colors.grey,
+                      size: 35,
+                    ),
+                    /*SizedBox(
+                      width: 15,
+                    ),*/
+                    Icon(
+                      Icons.person_rounded,
+                      color: Colors.grey,
+                      size: 35,
+                    ),
+                  ],
                 ),
               ),
             ),
