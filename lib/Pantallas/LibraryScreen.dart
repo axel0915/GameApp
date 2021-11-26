@@ -1,6 +1,3 @@
-// ignore: file_names
-// ignore_for_file: non_constant_identifier_names, prefer_const_constructors, file_names
-
 import 'package:flutter/material.dart';
 import 'package:projecte/widgets/Usuari.dart';
 
@@ -17,6 +14,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Widget body = Center(child: CircularProgressIndicator());
     return Scaffold(
       backgroundColor: Colors.grey[900],
       body: Column(
@@ -40,7 +38,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 Padding(
                   padding: const EdgeInsets.only(left: 10, top: 35),
                   child: Text(
-                    (mode_favorit ? "Els meus favorits" : "Els meus jocs"),
+                    (mode_favorit ? "Els meus favorits" : "Els meus"),
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: Colors.white,
