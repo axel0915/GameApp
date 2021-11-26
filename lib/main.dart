@@ -1,5 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:projecte/Pantallas/FirstScreen.dart';
+import 'package:projecte/Pantallas/HomeScreen.dart';
+import 'package:projecte/Pantallas/LibraryScreen.dart';
 import 'package:projecte/Pantallas/SignUp.dart';
 
 void main() async {
@@ -18,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SignUp(),
+      home: FirstScreen(),
     );
   }
 }
