@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
+import 'LibraryScreen.dart';
 //import 'package:projecte/widgets/Usuari.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -139,10 +141,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.grey,
                       size: 35,
                     ),
-                    Icon(
-                      Icons.grid_view_outlined,
-                      color: Colors.grey,
-                      size: 35,
+                    GestureDetector(
+                      child: Icon(
+                        Icons.grid_view_outlined,
+                        color: Colors.grey,
+                        size: 35,
+                      ),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => LibraryScreen()));
+                      },
                     ),
                     Icon(
                       Icons.person_rounded,

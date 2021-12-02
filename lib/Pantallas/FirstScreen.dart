@@ -19,7 +19,7 @@ class _FirstScreenState extends State<FirstScreen> {
                 image: DecorationImage(
                     image: AssetImage("assets/home_screen.png"),
                     colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.5), BlendMode.darken),
+                        Colors.black.withOpacity(0.6), BlendMode.darken),
                     fit: BoxFit.cover)),
           ),
           Align(
@@ -31,11 +31,11 @@ class _FirstScreenState extends State<FirstScreen> {
                 children: [
                   SizedBox(height: 100),
                   Text(
-                    "TITOL APLICACIÓ MÒBIL",
+                    "GAME APP",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 40,
+                        fontSize: 50,
                         fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 200),
@@ -46,7 +46,7 @@ class _FirstScreenState extends State<FirstScreen> {
                     },
                     child: Text("Registra't",
                         style: TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold)),
+                            fontSize: 27, fontWeight: FontWeight.bold)),
                     style: ElevatedButton.styleFrom(
                         primary: Colors.grey[900],
                         padding:
@@ -55,17 +55,17 @@ class _FirstScreenState extends State<FirstScreen> {
                   ),
                   SizedBox(height: 20),
                   Text("Ja tens un compte?",
-                      style: TextStyle(color: Colors.white, fontSize: 15)),
+                      style: TextStyle(color: Colors.white, fontSize: 17)),
                   SizedBox(height: 5),
                   ElevatedButton(
                     onPressed: () {},
                     child: Text("Inicia sessió",
                         style: TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.bold)),
+                            fontSize: 20, fontWeight: FontWeight.bold)),
                     style: ElevatedButton.styleFrom(
                         primary: Colors.blueGrey,
                         padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 35),
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 25),
                         shape: StadiumBorder()),
                   ),
                 ],

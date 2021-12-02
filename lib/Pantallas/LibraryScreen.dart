@@ -16,9 +16,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
   Widget build(BuildContext context) {
     Widget body = Center(child: CircularProgressIndicator());
     return Scaffold(
-      backgroundColor: Colors.grey[900],
+      backgroundColor: Colors.grey[850],
       body: Column(
-        mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
@@ -26,7 +25,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
               boxShadow: [
                 BoxShadow(color: Colors.black, spreadRadius: 5, blurRadius: 5)
               ],
-              color: Colors.grey[850],
+              color: Colors.grey[900],
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(40),
                 bottomRight: Radius.circular(40),
@@ -36,16 +35,20 @@ class _LibraryScreenState extends State<LibraryScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 35),
-                  child: Text(
-                    (mode_favorit ? "Els meus favorits" : "Els meus"),
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
+                  padding: const EdgeInsets.only(top: 40),
+                  child: Center(
+                    child: Text(
+                      (mode_favorit ? "Favorits" : "Tots els jocs"),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                      ),
                     ),
                   ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 Row(
                   children: [
@@ -57,14 +60,14 @@ class _LibraryScreenState extends State<LibraryScreen> {
                           });
                         },
                         child: Container(
-                          height: 75,
+                          height: 65,
                           decoration: BoxDecoration(
                             color: Colors.transparent,
                           ),
                           child: Icon(
                             (mode_favorit ? Icons.games_outlined : Icons.games),
                             size: 30,
-                            color: Colors.grey,
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -77,8 +80,10 @@ class _LibraryScreenState extends State<LibraryScreen> {
                           });
                         },
                         child: Container(
-                          height: 75,
+                          height: 65,
                           decoration: BoxDecoration(
+                            border: Border(
+                                left: BorderSide(color: Colors.grey, width: 1)),
                             color: Colors.transparent,
                           ),
                           child: Icon(
@@ -86,7 +91,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                                 ? Icons.favorite
                                 : Icons.favorite_border),
                             size: 30,
-                            color: Colors.grey,
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -101,7 +106,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Container(
                 child: ListView.separated(
-                  itemCount: 100, //user.biblioteca.length
+                  itemCount: 10, //user.biblioteca.length
                   itemBuilder: (context, index) {
                     return ListTile(
                       shape: RoundedRectangleBorder(
@@ -141,49 +146,44 @@ class _LibraryScreenState extends State<LibraryScreen> {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: 65,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(color: Colors.black, spreadRadius: 5, blurRadius: 5)
-                ],
-                color: Colors.grey[850],
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
+          Container(
+            height: 65,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(color: Colors.black, spreadRadius: 5, blurRadius: 5)
+              ],
+              color: Colors.grey[900],
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
               ),
-              child: Expanded(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(
-                      Icons.home_rounded,
-                      color: Colors.grey,
-                      size: 35,
-                    ),
-                    /*SizedBox(
-                      width: 15, //
-                    ),*/
-                    Icon(
-                      Icons.grid_view_outlined,
-                      color: Colors.grey,
-                      size: 35,
-                    ),
-                    /*SizedBox(
-                      width: 15,
-                    ),*/
-                    Icon(
-                      Icons.person_rounded,
-                      color: Colors.grey,
-                      size: 35,
-                    ),
-                  ],
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Icon(
+                  Icons.home_outlined,
+                  color: Colors.white,
+                  size: 35,
                 ),
-              ),
+                /*SizedBox(
+                  width: 15, //
+                ),*/
+                Icon(
+                  Icons.grid_view_rounded,
+                  color: Colors.white,
+                  size: 35,
+                ),
+                /*SizedBox(
+                  width: 15,
+                ),*/
+                Icon(
+                  Icons.person_outline_rounded,
+                  color: Colors.white,
+                  size: 35,
+                ),
+              ],
             ),
           )
         ],
