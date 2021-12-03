@@ -1,7 +1,9 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors, file_names, prefer_const_literals_to_create_immutables
 
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:projecte/widgets/Joc.dart';
 
 import 'LibraryScreen.dart';
 //import 'package:projecte/widgets/Usuari.dart';
@@ -15,6 +17,17 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   //late Usuari user;
+  List? movies;
+
+  @override
+  void initState() {
+    super.initState();
+    loadMovies().then((result) {
+      setState(() => movies = result);
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -95,25 +108,35 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   ),
                 ),
-                Container(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Aqui van los juegos para ti',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  width: 100,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[400],
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black, spreadRadius: 5, blurRadius: 5)
-                    ],
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
+                if (movies == null)
+                  Container(
+                      height: 200,
+                      child: Center(child: CircularProgressIndicator()))
+                else
+                  Container(
+                    height: 200,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        for (final movie in movies!)
+                          Container(
+                            height: 150,
+                            width: 80,
+                            child: Column(
+                              children: [
+                                Image.network(movie['background_image']),
+                                Text(
+                                  movie['name'],
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                      ],
                     ),
                   ),
-                ),
               ],
             ),
           ),

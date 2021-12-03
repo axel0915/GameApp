@@ -1,11 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:projecte/Pantallas/FirstScreen.dart';
-import 'package:projecte/Pantallas/HomeScreen.dart';
-import 'package:projecte/Pantallas/LibraryScreen.dart';
-import 'package:projecte/Pantallas/SignUp.dart';
+
+late String API_KEY;
 
 void main() async {
+  await dotenv.load(fileName: ".env");
+  API_KEY = dotenv.env['API_KEY']!;
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());

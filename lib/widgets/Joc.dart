@@ -1,6 +1,9 @@
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:projecte/main.dart';
+import 'package:http/http.dart' as http;
+
 class Plataforma {
   String nomPlataforma, companyiaplataforma;
   int anyPlataforma; //La plataforma tindria imatges??
@@ -47,4 +50,19 @@ class Joc extends Plataforma {
 
   toString() =>
       '$nom, $any, $genere, $companyia, $descripcio ($nomPlataforma, $companyiaplataforma, $anyPlataforma)';
+}
+
+Future<List> loadMovies() async {
+  final uri = Uri(
+    scheme: "https",
+    host: "api.rawg.io",
+    path: "/api/games",
+    queryParameters: {
+      'key': API_KEY,
+      'dates': "2022-01-01.2020-01-01",
+    },
+  );
+  final response = await http.get(uri);
+  final json = jsonDecode(response.body);
+  return json['results'];
 }

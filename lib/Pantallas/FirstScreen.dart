@@ -16,11 +16,13 @@ class _FirstScreenState extends State<FirstScreen> {
         children: [
           Container(
             decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/home_screen.png"),
-                    colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.6), BlendMode.darken),
-                    fit: BoxFit.cover)),
+              image: DecorationImage(
+                image: AssetImage("assets/home_screen.png"),
+                colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.6), BlendMode.darken),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
           Align(
             alignment: Alignment.topCenter,
