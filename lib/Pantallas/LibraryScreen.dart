@@ -174,7 +174,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                   },
                   itemCount: llista_de_prova.length,
                 ),
-                /*ListView.separated(
+                /* ListView.separated(
                   itemCount: 10, //user.biblioteca.length
                   itemBuilder: (context, index) {
                     return Container(
@@ -196,23 +196,19 @@ class _LibraryScreenState extends State<LibraryScreen> {
                                 ),
                               ),
                             ),
+                            Text("Joc numero $index",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold)),
                             Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text("Joc numero $index",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold)),
-                                Text("Genere/Companyia/Plataforma"),
-                              ],
-                            ),
-                              Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 GestureDetector(
-                                  child: Icon(Icons.delete_rounded),
+                                  child: Icon(Icons.cancel),
                                   onTap: () {
-                                    setState(() {});
+                                    setState(() {
+                                      llista_de_prova
+                                          .remove(llista_de_prova[index]);
+                                    });
                                   },
                                 ),
                                 Icon(
@@ -254,22 +250,23 @@ class _LibraryScreenState extends State<LibraryScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Icon(
-                  Icons.home_outlined,
-                  color: Colors.white,
-                  size: 35,
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      Navigator.of(context).pop();
+                    });
+                  },
+                  child: Icon(
+                    Icons.home_outlined,
+                    color: Colors.white,
+                    size: 35,
+                  ),
                 ),
-                /*SizedBox(
-                  width: 15, //
-                ),*/
                 Icon(
                   Icons.grid_view_rounded,
                   color: Colors.white,
                   size: 35,
                 ),
-                /*SizedBox(
-                  width: 15,
-                ),*/
                 Icon(
                   Icons.person_outline_rounded,
                   color: Colors.white,

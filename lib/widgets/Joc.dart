@@ -59,7 +59,7 @@ Future<List> loadMovies() async {
     path: "/api/games",
     queryParameters: {
       'key': API_KEY,
-      'dates': "2022-01-01.2020-01-01",
+      'dates': "2021-01-01,2021-12-31",
     },
   );
   final response = await http.get(uri);
