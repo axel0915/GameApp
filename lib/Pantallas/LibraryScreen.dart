@@ -9,8 +9,19 @@ class LibraryScreen extends StatefulWidget {
 }
 
 class _LibraryScreenState extends State<LibraryScreen> {
-  late Usuari user;
+  // late Usuari user;
   late bool mode_favorit = false;
+  List<String> llista_de_prova = [
+    "JOC 1",
+    "JOC 2",
+    "JOC 3",
+    "JOC 4",
+    "JOC 5",
+    "JOC 6",
+    "JOC 7",
+    "JOC 8",
+  ];
+  List<String> llistafavorits_de_prova = [];
 
   @override
   Widget build(BuildContext context) {
@@ -105,34 +116,115 @@ class _LibraryScreenState extends State<LibraryScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Container(
-                child: ListView.separated(
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
+                  itemBuilder: (context, index) {
+                    return Center(
+                      child: Container(
+                        height: 150,
+                        width: 150,
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black,
+                                spreadRadius: 0,
+                                blurRadius: 5,
+                              )
+                            ],
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Icon(
+                                    Icons.favorite_border_rounded,
+                                    color: Colors.red[900],
+                                  ),
+                                  GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          llista_de_prova
+                                              .remove(llista_de_prova[index]);
+                                        });
+                                      },
+                                      child: Icon(Icons.cancel_outlined)),
+                                ],
+                              ),
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Text("${llista_de_prova[index]}",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  itemCount: llista_de_prova.length,
+                ),
+                /*ListView.separated(
                   itemCount: 10, //user.biblioteca.length
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      tileColor: Colors.white,
-                      title: Padding(
+                    return Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text("Joc numero $index"),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              height: 150,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text("Joc numero $index",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold)),
+                                Text("Genere/Companyia/Plataforma"),
+                              ],
+                            ),
+                              Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  child: Icon(Icons.delete_rounded),
+                                  onTap: () {
+                                    setState(() {});
+                                  },
+                                ),
+                                Icon(
+                                  Icons.favorite,
+                                  color: Colors.red[900],
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
                       ), //user.biblioteca[index].nom
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            child: Icon(Icons.delete_rounded),
-                            onTap: () {
-                              setState(() {});
-                            },
-                          ),
-                          Icon(
-                            Icons.favorite,
-                            color: Colors.red[900],
-                          )
-                        ],
-                      ),
-                      subtitle:
-                          Text("$index"), //user.biblioteca[index].companyia
+                      //user.biblioteca[index].companyia
                     );
                   },
                   separatorBuilder: (context, index) {
@@ -142,7 +234,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                       indent: 72,
                     );
                   },
-                ),
+                ),*/
               ),
             ),
           ),

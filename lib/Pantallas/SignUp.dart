@@ -109,43 +109,41 @@ class _SignUpState extends State<SignUp> {
                     height: 5,
                   ),
                   Expanded(
-                    child: Container(
-                      child: GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2),
-                        itemBuilder: (context, i) {
-                          return Center(
-                            child: Container(
-                                height: 150,
-                                width: 150,
-                                decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black,
-                                        spreadRadius: 0,
-                                        blurRadius: 5,
-                                      )
-                                    ],
-                                    image: DecorationImage(
-                                        image: AssetImage("assets/$i.png"),
-                                        colorFilter: ColorFilter.mode(
-                                            Colors.black.withOpacity(0.5),
-                                            BlendMode.darken),
-                                        fit: BoxFit.cover),
-                                    color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                                child: Center(
-                                  child: Text("${ListaGeneros[i]}",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20)),
-                                )),
-                          );
-                        },
-                        itemCount: 8,
-                      ),
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2),
+                      itemBuilder: (context, i) {
+                        return Center(
+                          child: Container(
+                              height: 150,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black,
+                                      spreadRadius: 0,
+                                      blurRadius: 5,
+                                    )
+                                  ],
+                                  image: DecorationImage(
+                                      image: AssetImage("assets/$i.png"),
+                                      colorFilter: ColorFilter.mode(
+                                          Colors.black.withOpacity(0.5),
+                                          BlendMode.darken),
+                                      fit: BoxFit.cover),
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              child: Center(
+                                child: Text("${ListaGeneros[i]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20)),
+                              )),
+                        );
+                      },
+                      itemCount: 8,
                     ),
                   ),
                   /*Spacer(),
