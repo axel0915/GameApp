@@ -4,24 +4,17 @@ import 'dart:convert';
 import 'package:projecte/main.dart';
 import 'package:http/http.dart' as http;
 
-class Plataforma {
-  String nomPlataforma, companyiaplataforma;
-  int anyPlataforma; //La plataforma tindria imatges??
+class Joc {
+  String name,
+      slug,
+      background_image, //Com es faria per posar una imatge?? URL??
+      released,
+      metacritic;
 
-  Plataforma(this.nomPlataforma, this.companyiaplataforma, this.anyPlataforma);
-}
 
-class Joc extends Plataforma {
-  String nom,
-      genere,
-      descripcio,
-      companyia,
-      imatge; //Com es faria per posar una imatge?? URL??
-  int any;
+  Joc(this.name, this.slug, this.background_image, this.released, this.metacritic);
+//slug = json ["genres"]["slug"];
 
-  Joc(String np, String cp, int ap, this.nom, this.any, this.companyia,
-      this.descripcio, this.genere, this.imatge)
-      : super(np, cp, ap);
 
   //APARTAT JSON FIREBASE A FER:
   /* 
@@ -36,21 +29,19 @@ class Joc extends Plataforma {
         'any': any
       };
 
-  Joc.fromJson(Map<String, dynamic> json)
-      : this(
-            json['nomplataforma'],
-            json['companyiaplataforma'],
-            json['anyplataforma'],
-            json['nom'],
-            json['any'],
-            json['companyia'],
-            json['descripcio'],
-            json['genere']);
   */
-
-  toString() =>
-      '$nom, $any, $genere, $companyia, $descripcio ($nomPlataforma, $companyiaplataforma, $anyPlataforma)';
+  
+  Joc.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        slug = json["genres"]["slug"],
+       background_image = json["background_image"],
+        released = json["released"],
+        metacritic = json["metacritic"];
 }
+
+  /*toString() =>
+      '$name, $slug, $genere, $companyia, $descripcio ($nomPlataforma, $companyiaplataforma, $anyPlataforma)';
+*/
 
 Future<List> loadMovies() async {
   final uri = Uri(
@@ -64,5 +55,6 @@ Future<List> loadMovies() async {
   );
   final response = await http.get(uri);
   final json = jsonDecode(response.body);
-  return json['results'];
+  List jocs = json["results"];
+  return jocs.map((jsonJoc)=> Joc.fromJson(jsonJoc)).toList();
 }
