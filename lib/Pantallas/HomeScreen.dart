@@ -63,48 +63,45 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            Column(
-              children: [
-                SizedBox(
-                  height: 5,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    'Últims jocs:',
-                    style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                if (lastgames == null)
-                  Container(
-                      height: 200,
-                      child: Center(child: CircularProgressIndicator()))
-                else
-                  ListWidget(games: lastgames),
-                SizedBox(height: 5),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    'Per a tu:',
-                    style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                if (lastgames == null)
-                  Container(
-                      height: 200,
-                      child: Center(child: CircularProgressIndicator()))
-                else
-                  ListWidget(
-                    games: yourgames,
-                  ),
-              ],
+            SizedBox(
+              height: 5,
             ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(
+                'Últims jocs:',
+                style: TextStyle(
+                    fontSize: 25,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            if (lastgames == null)
+              Container(
+                  height: 200,
+                  child: Center(child: CircularProgressIndicator()))
+            else
+              ListWidget(games: lastgames),
+            SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(
+                'Per a tu:',
+                style: TextStyle(
+                    fontSize: 25,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            if (lastgames == null)
+              Container(
+                  height: 200,
+                  child: Center(child: CircularProgressIndicator()))
+            else
+              ListWidget(
+                games: yourgames,
+              ),
+            Spacer(),
             Container(
               height: 65,
               decoration: BoxDecoration(
