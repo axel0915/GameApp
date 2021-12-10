@@ -103,24 +103,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ListWidget(
                     games: yourgames,
                   ),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    'Terror:',
-                    style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                if (lastgames == null)
-                  Container(
-                      height: 200,
-                      child: Center(child: CircularProgressIndicator()))
-                else
-                  ListWidget(
-                    games: yourgames,
-                  ),
               ],
             ),
             Container(
