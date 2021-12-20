@@ -15,11 +15,11 @@ class _FirstScreenState extends State<FirstScreen> {
   Widget build(BuildContext context) {
     final db = FirebaseFirestore.instance;
 
-    /* db
-        .doc("/Usuaris/pauek@pauek.com")
-        .set({'genere_preferit': "puzzle", 'nom': "Pau"}); 
-
     db
+        .doc("/Usuaris/pauek@pauek.com")
+        .set({'genere_preferit': "puzzle", 'nom': "Pau"});
+
+    /*  db
         .collection('/Usuaris')
         .add({'genere_preferit': 'action', 'nom': 'Groucho'});
 */

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:projecte/widgets/Joc.dart';
@@ -14,6 +16,30 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<Joc>? lastgames;
   List<Joc>? yourgames;
+
+  final user = FirebaseAuth.instance.currentUser!;
+  final db = FirebaseFirestore.instance;
+
+  /*StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .doc("/Usuaris/ExYheH7yzBNlS8VpcWgzSGAdGnq2")
+                        .snapshots(),
+                    builder: (
+                      BuildContext context,
+                      AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
+                          snapshot,
+                    ) {
+                      if (!snapshot.hasData) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      final doc = snapshot.data!;
+                      final data = doc.data()!;
+                      return Text(
+                        "${data['name']}, ${data['genere_preferit']}",
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      );
+                    },
+                  ),*/
 
   @override
   void initState() {
