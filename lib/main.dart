@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:projecte/Pantallas/FirstScreen.dart';
 
+import 'widgets/AuthGate.dart';
+
 late String API_KEY;
 
 void main() async {
@@ -10,7 +12,11 @@ void main() async {
   API_KEY = dotenv.env['API_KEY']!;
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(
+    AuthGate(
+      app: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

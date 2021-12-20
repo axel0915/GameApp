@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projecte/Pantallas/SignUp.dart';
 
@@ -11,6 +13,16 @@ class FirstScreen extends StatefulWidget {
 class _FirstScreenState extends State<FirstScreen> {
   @override
   Widget build(BuildContext context) {
+    final db = FirebaseFirestore.instance;
+
+    /* db
+        .doc("/Usuaris/pauek@pauek.com")
+        .set({'genere_preferit': "puzzle", 'nom': "Pau"}); 
+
+    db
+        .collection('/Usuaris')
+        .add({'genere_preferit': 'action', 'nom': 'Groucho'});
+*/
     return Scaffold(
       body: Stack(
         children: [
@@ -70,6 +82,15 @@ class _FirstScreenState extends State<FirstScreen> {
                             EdgeInsets.symmetric(vertical: 15, horizontal: 25),
                         shape: StadiumBorder()),
                   ),
+                  Container(
+                    decoration: BoxDecoration(color: Colors.white),
+                    child: IconButton(
+                      icon: const Icon(Icons.logout),
+                      onPressed: () {
+                        FirebaseAuth.instance.signOut();
+                      },
+                    ),
+                  )
                 ],
               ),
             ),
