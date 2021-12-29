@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,13 +15,13 @@ class FirstScreen extends StatefulWidget {
 class _FirstScreenState extends State<FirstScreen> {
   @override
   Widget build(BuildContext context) {
-    final db = FirebaseFirestore.instance;
+    /* final db = FirebaseFirestore.instance;
 
     db
         .doc("/Usuaris/pauek@pauek.com")
         .set({'genere_preferit': "puzzle", 'nom': "Pau"});
 
-    /*  db
+      db
         .collection('/Usuaris')
         .add({'genere_preferit': 'action', 'nom': 'Groucho'});
 */
@@ -82,7 +84,7 @@ class _FirstScreenState extends State<FirstScreen> {
                             EdgeInsets.symmetric(vertical: 15, horizontal: 25),
                         shape: StadiumBorder()),
                   ),
-                  Container(
+                  /*Container(
                     decoration: BoxDecoration(color: Colors.white),
                     child: IconButton(
                       icon: const Icon(Icons.logout),
@@ -90,7 +92,7 @@ class _FirstScreenState extends State<FirstScreen> {
                         FirebaseAuth.instance.signOut();
                       },
                     ),
-                  )
+                  )*/
                 ],
               ),
             ),

@@ -1,10 +1,10 @@
+// ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:projecte/widgets/Joc.dart';
-
-import 'LibraryScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,30 +16,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<Joc>? lastgames;
   List<Joc>? yourgames;
-
-  final user = FirebaseAuth.instance.currentUser!;
-  final db = FirebaseFirestore.instance;
-
-  /*StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .doc("/Usuaris/ExYheH7yzBNlS8VpcWgzSGAdGnq2")
-                        .snapshots(),
-                    builder: (
-                      BuildContext context,
-                      AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
-                          snapshot,
-                    ) {
-                      if (!snapshot.hasData) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      final doc = snapshot.data!;
-                      final data = doc.data()!;
-                      return Text(
-                        "${data['name']}, ${data['genere_preferit']}",
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      );
-                    },
-                  ),*/
 
   @override
   void initState() {
@@ -59,36 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(color: Colors.black, spreadRadius: 5, blurRadius: 5)
-                ],
-                color: Colors.grey[900],
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(40),
-                  bottomRight: Radius.circular(40),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 20, top: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        'GameApp',
-                        style: TextStyle(
-                            fontSize: 30,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            AppBar(),
             SizedBox(
               height: 5,
             ),
@@ -127,51 +74,48 @@ class _HomeScreenState extends State<HomeScreen> {
               ListWidget(
                 games: yourgames,
               ),
-            Spacer(),
-            Container(
-              height: 65,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(color: Colors.black, spreadRadius: 5, blurRadius: 5)
-                ],
-                color: Colors.grey[900],
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Icon(
-                    Icons.home_rounded,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => LibraryScreen()));
-                      });
-                    },
-                    child: Icon(
-                      Icons.grid_view,
-                      color: Colors.white,
-                      size: 35,
-                    ),
-                  ),
-                  Icon(
-                    Icons.person_outline_rounded,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-                ],
-              ),
-            )
           ],
         ));
+  }
+}
+
+class AppBar extends StatelessWidget {
+  const AppBar({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(color: Colors.black, spreadRadius: 5, blurRadius: 5)
+        ],
+        color: Colors.grey[900],
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(40),
+          bottomRight: Radius.circular(40),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 20, top: 40),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Text(
+                'GameApp',
+                style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -235,7 +179,7 @@ class ListWidget extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          "${game.name}",
+                          game.name,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.white,

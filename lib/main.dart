@@ -1,9 +1,9 @@
+// ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, non_constant_identifier_names
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:projecte/Pantallas/FirstScreen.dart';
-
-import 'widgets/AuthGate.dart';
 
 late String API_KEY;
 
@@ -13,9 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(
-    AuthGate(
-      app: const MyApp(),
-    ),
+    const MyApp(),
   );
 }
 
