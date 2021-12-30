@@ -8,7 +8,10 @@ import 'package:projecte/Pantallas/GameDetailsScreen.dart';
 import 'package:projecte/widgets/Joc.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final List<Joc> all, fav;
+
+  const HomeScreen({Key? key, required this.all, required this.fav})
+      : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -39,15 +42,15 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.grey[850],
         body: Column(
           children: [
+            AppBar(),
+            SizedBox(
+              height: 5,
+            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    AppBar(),
-                    SizedBox(
-                      height: 5,
-                    ),
                     Padding(
                       padding: const EdgeInsets.all(10),
                       child: Text(
@@ -58,7 +61,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    ListWidget(games: lastgames),
+                    ListWidget(
+                        games: lastgames, fav: widget.fav, all: widget.all),
                     SizedBox(height: 5),
                     Padding(
                       padding: const EdgeInsets.all(10),
@@ -71,8 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     ListWidget(
-                      games: nextgames,
-                    ),
+                        games: nextgames, all: widget.all, fav: widget.fav),
                     SizedBox(height: 5),
                     Padding(
                       padding: const EdgeInsets.all(10),
@@ -85,8 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     ListWidget(
-                      games: yourgames,
-                    ),
+                        games: yourgames, all: widget.all, fav: widget.fav),
                   ],
                 ),
               ),
@@ -136,17 +138,22 @@ class AppBar extends StatelessWidget {
   }
 }
 
-class ListWidget extends StatelessWidget {
-  const ListWidget({
-    Key? key,
-    required this.games,
-  }) : super(key: key);
+class ListWidget extends StatefulWidget {
+  const ListWidget(
+      {Key? key, required this.games, required this.fav, required this.all})
+      : super(key: key);
 
   final List<Joc>? games;
+  final List<Joc> all, fav;
 
   @override
+  _ListWidgetState createState() => _ListWidgetState();
+}
+
+class _ListWidgetState extends State<ListWidget> {
+  @override
   Widget build(BuildContext context) {
-    if (games == null)
+    if (widget.games == null)
       return Container(
           height: 200, child: Center(child: CircularProgressIndicator()));
     else
@@ -156,7 +163,7 @@ class ListWidget extends StatelessWidget {
         child: ListView(
           scrollDirection: Axis.horizontal,
           children: [
-            for (final game in games!)
+            for (final game in widget.games!)
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
@@ -164,8 +171,7 @@ class ListWidget extends StatelessWidget {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => GameDetailsScreen(
-                          joc: game,
-                        ),
+                            joc: game, fav: widget.fav, all: widget.all),
                       ),
                     );
                   },
@@ -186,23 +192,30 @@ class ListWidget extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                (game.metacritic != null
-                                    ? "${game.metacritic}"
-                                    : "-"),
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                              ),
-                              Icon(
-                                Icons.star_rate_rounded,
-                                color: Colors.yellow,
-                              ),
-                            ]),
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  (game.metacritic != null
+                                      ? "${game.metacritic}"
+                                      : "-"),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                                SizedBox(width: 2),
+                                Container(
+                                  height: 20,
+                                  width: 20,
+                                  child: Image.network(
+                                    "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Metacritic.svg/1024px-Metacritic.svg.png",
+                                  ),
+                                ),
+                              ]),
+                        ),
                         Container(
                           height: 50,
                           width: 200,

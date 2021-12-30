@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:projecte/Pantallas/HomeScreen.dart';
 import 'package:projecte/Pantallas/LibraryScreen.dart';
+import 'package:projecte/widgets/Joc.dart';
 
 class HomeNavigatorBar extends StatefulWidget {
   const HomeNavigatorBar({Key? key}) : super(key: key);
@@ -13,6 +14,8 @@ class HomeNavigatorBar extends StatefulWidget {
 
 class _HomeNavigatorBarState extends State<HomeNavigatorBar> {
   int _selectedIndex = 0;
+  List<Joc> llista_de_prova = [];
+  List<Joc> llistafavorits_de_prova = [];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -22,9 +25,9 @@ class _HomeNavigatorBarState extends State<HomeNavigatorBar> {
 
   Widget _centralWidget() {
     if (_selectedIndex == 0) {
-      return HomeScreen();
+      return HomeScreen(fav: llistafavorits_de_prova, all: llista_de_prova);
     } else if (_selectedIndex == 1) {
-      return LibraryScreen();
+      return LibraryScreen(fav: llistafavorits_de_prova, all: llista_de_prova);
     } else {
       return const Icon(Icons.shopping_cart);
     }
@@ -37,12 +40,11 @@ class _HomeNavigatorBarState extends State<HomeNavigatorBar> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined, size: 20), label: 'Home'),
+              icon: Icon(Icons.home_rounded, size: 30), label: 'Home'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.grid_view_rounded, size: 20), label: "Library"),
+              icon: Icon(Icons.grid_view_rounded, size: 30), label: "Library"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline_rounded, size: 20),
-              label: "User"),
+              icon: Icon(Icons.person_rounded, size: 30), label: "User"),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.white,

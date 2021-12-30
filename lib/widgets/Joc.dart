@@ -6,34 +6,53 @@ import 'package:http/http.dart' as http;
 
 class Screenshots {
   String image;
-  int id;
 
-  Screenshots(this.image, this.id);
+  Screenshots(this.image);
 
-  Screenshots.fromJson(Map<String, dynamic> json)
-      : image = json["image"],
-        id = json["id"];
+  Screenshots.fromJson(Map<String, dynamic> json) : image = json["image"];
+}
+
+class Platforms {
+  String name;
+
+  Platforms(this.name);
+
+  Platforms.fromJson(Map<String, dynamic> json)
+      : name = json["platform"]["name"];
+}
+
+class Genres {
+  String name;
+
+  Genres(this.name);
+
+  Genres.fromJson(Map<String, dynamic> json) : name = json["name"];
 }
 
 class Joc {
   List<Screenshots>? screenshots;
-  String name, slug, background_image, released, platform, color;
+  List<Platforms>? platform;
+  List<Genres>? genre;
+  String name, slug, background_image, released;
   int? metacritic;
 
-  Joc(this.name, this.slug, this.background_image, this.released,
-      this.metacritic, this.platform, this.screenshots, this.color);
+  Joc(this.name, this.genre, this.slug, this.background_image, this.released,
+      this.metacritic, this.platform, this.screenshots);
 
   Joc.fromJson(Map<String, dynamic> json)
       : name = json["name"],
-        color = json["dominant_color"],
-        slug = json["genres"][0]["name"],
+        slug = json["slug"],
+        genre =
+            (json["genres"] as List).map((i) => Genres.fromJson(i)).toList(),
         background_image = json["background_image"],
         released = json["released"],
         screenshots = (json["short_screenshots"] as List)
             .map((i) => Screenshots.fromJson(i))
             .toList(),
         metacritic = json["metacritic"],
-        platform = json["platforms"][0]["platform"]["name"];
+        platform = (json["parent_platforms"] as List)
+            .map((i) => Platforms.fromJson(i))
+            .toList();
 }
 
 Future<List<Joc>> loadlastGames() async {

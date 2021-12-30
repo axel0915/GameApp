@@ -1,28 +1,21 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:projecte/Pantallas/GameDetailsScreen.dart';
+import 'package:projecte/widgets/Joc.dart';
 
 class LibraryScreen extends StatefulWidget {
-  const LibraryScreen({Key? key}) : super(key: key);
+  final List<Joc> all, fav;
+
+  const LibraryScreen({Key? key, required this.all, required this.fav})
+      : super(key: key);
 
   @override
   _LibraryScreenState createState() => _LibraryScreenState();
 }
 
 class _LibraryScreenState extends State<LibraryScreen> {
-  // late Usuari user;
   late bool mode_favorit = false;
-  List<String> llista_de_prova = [
-    "JOC 1",
-    "JOC 2",
-    "JOC 3",
-    "JOC 4",
-    "JOC 5",
-    "JOC 6",
-    "JOC 7",
-    "JOC 8",
-  ];
-  List<String> llistafavorits_de_prova = [];
 
   @override
   Widget build(BuildContext context) {
@@ -33,16 +26,13 @@ class _LibraryScreenState extends State<LibraryScreen> {
         children: [
           LibraryAppBar(),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
-                itemBuilder: (context, index) {
-                  return GameContainer(index);
-                },
-                itemCount: llista_de_prova.length,
-              ),
+            child: GridView.builder(
+              gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+              itemBuilder: (context, index) {
+                return GameContainer(index);
+              },
+              itemCount: mode_favorit ? widget.fav.length : widget.all.length,
             ),
           ),
         ],
@@ -120,7 +110,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                     child: Icon(
                       (mode_favorit ? Icons.favorite : Icons.favorite_border),
                       size: 30,
-                      color: Colors.white,
+                      color: Colors.red[900],
                     ),
                   ),
                 ),
@@ -134,48 +124,86 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   Center GameContainer(int index) {
     return Center(
-      child: Container(
-        height: 150,
-        width: 150,
-        decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black,
-                spreadRadius: 0,
-                blurRadius: 5,
-              )
-            ],
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(20))),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(
-                    Icons.favorite_border_rounded,
-                    color: Colors.red[900],
-                  ),
-                  GestureDetector(
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => GameDetailsScreen(
+                      joc: mode_favorit ? widget.fav[index] : widget.all[index],
+                      fav: widget.fav,
+                      all: widget.all),
+                ),
+              );
+            });
+          },
+          child: Container(
+            height: 200,
+            width: 200,
+            decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black,
+                    spreadRadius: 0,
+                    blurRadius: 5,
+                  )
+                ],
+                image: DecorationImage(
+                    image: NetworkImage(mode_favorit
+                        ? widget.fav[index].background_image
+                        : widget.all[index].background_image),
+                    fit: BoxFit.cover),
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
                       onTap: () {
                         setState(() {
-                          llista_de_prova.remove(llista_de_prova[index]);
+                          if (mode_favorit) {
+                            widget.fav.remove(widget.fav[index]);
+                          } else {
+                            widget.all.remove(widget.all[index]);
+                          }
                         });
                       },
                       child: Icon(Icons.cancel_outlined)),
-                ],
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Text(llista_de_prova[index],
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              ),
-            ],
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    height: 50,
+                    width: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(10),
+                          bottomRight: Radius.circular(10)),
+                      color: Colors.black.withOpacity(0.5),
+                    ),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Text(
+                            mode_favorit
+                                ? widget.fav[index].name
+                                : widget.all[index].name,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            )),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
