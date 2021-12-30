@@ -1,9 +1,10 @@
-// ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
+// ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, curly_braces_in_flow_control_structures
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:projecte/Pantallas/GameDetailsScreen.dart';
 import 'package:projecte/widgets/Joc.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,12 +17,16 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<Joc>? lastgames;
   List<Joc>? yourgames;
+  List<Joc>? nextgames;
 
   @override
   void initState() {
     super.initState();
     loadlastGames().then((result) {
       setState(() => lastgames = result);
+    });
+    loadnextGames().then((result) {
+      setState(() => nextgames = result);
     });
     loadyourGames("adventure").then((result) {
       setState(() => yourgames = result);
@@ -33,47 +38,59 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         backgroundColor: Colors.grey[850],
         body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            AppBar(),
-            SizedBox(
-              height: 5,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                'Últims jocs:',
-                style: TextStyle(
-                    fontSize: 25,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    AppBar(),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        'Last games:',
+                        style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    ListWidget(games: lastgames),
+                    SizedBox(height: 5),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        'Coming soon:',
+                        style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    ListWidget(
+                      games: nextgames,
+                    ),
+                    SizedBox(height: 5),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        'For you:',
+                        style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    ListWidget(
+                      games: yourgames,
+                    ),
+                  ],
+                ),
               ),
             ),
-            if (lastgames == null)
-              Container(
-                  height: 200,
-                  child: Center(child: CircularProgressIndicator()))
-            else
-              ListWidget(games: lastgames),
-            SizedBox(height: 5),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                'Per a tu:',
-                style: TextStyle(
-                    fontSize: 25,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            if (lastgames == null)
-              Container(
-                  height: 200,
-                  child: Center(child: CircularProgressIndicator()))
-            else
-              ListWidget(
-                games: yourgames,
-              ),
           ],
         ));
   }
@@ -129,71 +146,90 @@ class ListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 100,
-      height: 250,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [
-          for (final game in games!)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black,
-                        spreadRadius: 0,
-                        blurRadius: 5,
-                      )
-                    ],
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    image: DecorationImage(
-                        image: NetworkImage(game.background_image),
-                        fit: BoxFit.cover)),
-                width: 200,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                      Text(
-                        (game.metacritic != null ? "${game.metacritic}" : "-"),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      ),
-                      Icon(
-                        Icons.star_rate_rounded,
-                        color: Colors.yellow,
-                      ),
-                    ]),
-                    Container(
-                      height: 50,
-                      width: 200,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(10),
-                            bottomRight: Radius.circular(10)),
-                        color: Colors.black.withOpacity(0.5),
-                      ),
-                      child: Center(
-                        child: Text(
-                          game.name,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
+    if (games == null)
+      return Container(
+          height: 200, child: Center(child: CircularProgressIndicator()));
+    else
+      return Container(
+        width: 100,
+        height: 250,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: [
+            for (final game in games!)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => GameDetailsScreen(
+                          joc: game,
                         ),
                       ),
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black,
+                            spreadRadius: 0,
+                            blurRadius: 5,
+                          )
+                        ],
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        image: DecorationImage(
+                            image: NetworkImage(game.background_image),
+                            fit: BoxFit.cover)),
+                    width: 200,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                (game.metacritic != null
+                                    ? "${game.metacritic}"
+                                    : "-"),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
+                              Icon(
+                                Icons.star_rate_rounded,
+                                color: Colors.yellow,
+                              ),
+                            ]),
+                        Container(
+                          height: 50,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10)),
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                          child: Center(
+                            child: Text(
+                              game.name,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            )
-        ],
-      ),
-    );
+              )
+          ],
+        ),
+      );
   }
 }

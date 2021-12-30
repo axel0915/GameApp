@@ -69,7 +69,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
             padding: const EdgeInsets.only(top: 40),
             child: Center(
               child: Text(
-                (mode_favorit ? "Favorits" : "Tots els jocs"),
+                (mode_favorit ? "Favourits" : "All"),
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

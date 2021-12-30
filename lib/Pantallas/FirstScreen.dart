@@ -38,66 +38,73 @@ class _FirstScreenState extends State<FirstScreen> {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(height: 100),
-                  Text(
-                    "GAME APP",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 50,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 200),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => SignUp()));
-                    },
-                    child: Text("Registra't",
-                        style: TextStyle(
-                            fontSize: 27, fontWeight: FontWeight.bold)),
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.grey[900],
-                        padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 35),
-                        shape: StadiumBorder()),
-                  ),
-                  SizedBox(height: 20),
-                  Text("Ja tens un compte?",
-                      style: TextStyle(color: Colors.white, fontSize: 17)),
-                  SizedBox(height: 5),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text("Inicia sessió",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.blueGrey,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 25),
-                        shape: StadiumBorder()),
-                  ),
-                  /*Container(
-                    decoration: BoxDecoration(color: Colors.white),
-                    child: IconButton(
-                      icon: const Icon(Icons.logout),
-                      onPressed: () {
-                        FirebaseAuth.instance.signOut();
-                      },
-                    ),
-                  )*/
-                ],
-              ),
-            ),
-          )
+          SignIn()
         ],
+      ),
+    );
+  }
+}
+
+class SignIn extends StatelessWidget {
+  const SignIn({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: 100),
+            Text(
+              "GAME APP",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 50,
+                  fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 200),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => SignUp()));
+              },
+              child: Text("Sign up",
+                  style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold)),
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.grey[900],
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 35),
+                  shape: StadiumBorder()),
+            ),
+            SizedBox(height: 20),
+            Text("Already have an account?",
+                style: TextStyle(color: Colors.white, fontSize: 17)),
+            SizedBox(height: 5),
+            ElevatedButton(
+              onPressed: () {},
+              child: Text("Sign in",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.blueGrey,
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                  shape: StadiumBorder()),
+            ),
+            /*Container(
+              decoration: BoxDecoration(color: Colors.white),
+              child: IconButton(
+                icon: const Icon(Icons.logout),
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                },
+              ),
+            )*/
+          ],
+        ),
       ),
     );
   }
