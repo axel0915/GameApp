@@ -33,15 +33,17 @@ class Joc {
   List<Screenshots>? screenshots;
   List<Platforms>? platform;
   List<Genres>? genre;
+  bool? tba;
   String name, slug, background_image, released;
   int? metacritic;
 
   Joc(this.name, this.genre, this.slug, this.background_image, this.released,
-      this.metacritic, this.platform, this.screenshots);
+      this.metacritic, this.platform, this.screenshots, this.tba);
 
   Joc.fromJson(Map<String, dynamic> json)
       : name = json["name"],
         slug = json["slug"],
+        tba = json["tba"],
         genre =
             (json["genres"] as List).map((i) => Genres.fromJson(i)).toList(),
         background_image = json["background_image"],
@@ -95,6 +97,57 @@ Future<List<Joc>> loadNintendoGames() async {
     queryParameters: {
       'key': API_KEY,
       'developers': "nintendo",
+      'dates': "2021-01-01,2021-12-31",
+    },
+  );
+  final response = await http.get(uri);
+  final json = jsonDecode(response.body);
+  List jocs = json["results"];
+  return jocs.map((jsonJoc) => Joc.fromJson(jsonJoc)).toList();
+}
+
+Future<List<Joc>> loadXboxGames() async {
+  final uri = Uri(
+    scheme: "https",
+    host: "api.rawg.io",
+    path: "/api/games",
+    queryParameters: {
+      'key': API_KEY,
+      'publishers': "xbox-game-studios",
+      'dates': "2021-01-01,2021-12-31",
+    },
+  );
+  final response = await http.get(uri);
+  final json = jsonDecode(response.body);
+  List jocs = json["results"];
+  return jocs.map((jsonJoc) => Joc.fromJson(jsonJoc)).toList();
+}
+
+Future<List<Joc>> loadSonyGames() async {
+  final uri = Uri(
+    scheme: "https",
+    host: "api.rawg.io",
+    path: "/api/games",
+    queryParameters: {
+      'key': API_KEY,
+      'publishers': "sony-interactive-entertainment",
+      'dates': "2019-01-01,2021-12-31",
+    },
+  );
+  final response = await http.get(uri);
+  final json = jsonDecode(response.body);
+  List jocs = json["results"];
+  return jocs.map((jsonJoc) => Joc.fromJson(jsonJoc)).toList();
+}
+
+Future<List<Joc>> loadRatingGames() async {
+  final uri = Uri(
+    scheme: "https",
+    host: "api.rawg.io",
+    path: "/api/games",
+    queryParameters: {
+      'key': API_KEY,
+      'ordering': "-metacritic",
       'dates': "2021-01-01,2021-12-31",
     },
   );

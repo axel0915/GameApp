@@ -8,7 +8,7 @@ import 'package:projecte/Pantallas/GameDetailsScreen.dart';
 import 'package:projecte/widgets/Joc.dart';
 
 class HomeScreen extends StatefulWidget {
-  final List<Joc> all, fav;
+  final List<Joc> all, fav; //ELIMINAR ESTO
 
   const HomeScreen({Key? key, required this.all, required this.fav})
       : super(key: key);
@@ -19,8 +19,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Joc>? lastgames;
+  List<Joc>? Nintendogames;
+  List<Joc>? Sonygames;
+  List<Joc>? Xboxgames;
   List<Joc>? yourgames;
   List<Joc>? nextgames;
+  List<Joc>? ratinggames;
 
   @override
   void initState() {
@@ -31,28 +35,68 @@ class _HomeScreenState extends State<HomeScreen> {
     loadnextGames().then((result) {
       setState(() => nextgames = result);
     });
-    loadyourGames("adventure").then((result) {
+    loadyourGames("puzzle").then((result) {
       setState(() => yourgames = result);
+    });
+    loadNintendoGames().then((result) {
+      setState(() => Nintendogames = result);
+    });
+    loadXboxGames().then((result) {
+      setState(() => Xboxgames = result);
+    });
+    loadSonyGames().then((result) {
+      setState(() => Sonygames = result);
+    });
+    loadRatingGames().then((result) {
+      setState(() => ratinggames = result);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Icon(Icons.search_rounded, size: 30),
+            )
+          ],
+          automaticallyImplyLeading: false,
+          toolbarHeight: 70,
+          shadowColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(40),
+              bottomRight: Radius.circular(40),
+            ),
+          ),
+          title: Text(
+            "GameApp",
+            style: TextStyle(
+              fontSize: 30,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.grey[900],
+        ),
         backgroundColor: Colors.grey[850],
         body: Column(
           children: [
-            AppBar(),
-            SizedBox(
-              height: 5,
-            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    SizedBox(
+                      height: 100,
+                    ),
                     Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding:
+                          const EdgeInsets.only(left: 5, top: 10, bottom: 5),
                       child: Text(
                         'Last games:',
                         style: TextStyle(
@@ -65,7 +109,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         games: lastgames, fav: widget.fav, all: widget.all),
                     SizedBox(height: 5),
                     Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding:
+                          const EdgeInsets.only(left: 5, top: 10, bottom: 5),
                       child: Text(
                         'Coming soon:',
                         style: TextStyle(
@@ -78,7 +123,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         games: nextgames, all: widget.all, fav: widget.fav),
                     SizedBox(height: 5),
                     Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding:
+                          const EdgeInsets.only(left: 5, top: 10, bottom: 5),
                       child: Text(
                         'For you:',
                         style: TextStyle(
@@ -89,6 +135,62 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     ListWidget(
                         games: yourgames, all: widget.all, fav: widget.fav),
+                    SizedBox(height: 5),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 5, top: 10, bottom: 5),
+                      child: Text(
+                        'Nintendo games:',
+                        style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    ListWidget(
+                        games: Nintendogames, all: widget.all, fav: widget.fav),
+                    SizedBox(height: 5),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 5, top: 10, bottom: 5),
+                      child: Text(
+                        'Xbox games:',
+                        style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    ListWidget(
+                        games: Xboxgames, all: widget.all, fav: widget.fav),
+                    SizedBox(height: 5),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 5, top: 10, bottom: 5),
+                      child: Text(
+                        'Playstation games:',
+                        style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    ListWidget(
+                        games: Sonygames, all: widget.all, fav: widget.fav),
+                    SizedBox(height: 5),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 5, top: 10, bottom: 5),
+                      child: Text(
+                        'Top 2021:',
+                        style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    ListWidget(
+                        games: ratinggames, all: widget.all, fav: widget.fav),
                   ],
                 ),
               ),
@@ -98,8 +200,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class AppBar extends StatelessWidget {
-  const AppBar({
+class AppBarcaca extends StatelessWidget {
+  const AppBarcaca({
     Key? key,
   }) : super(key: key);
 
@@ -131,6 +233,8 @@ class AppBar extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
             ),
+            Spacer(),
+            Icon(Icons.search)
           ],
         ),
       ),
@@ -138,7 +242,7 @@ class AppBar extends StatelessWidget {
   }
 }
 
-class ListWidget extends StatefulWidget {
+class ListWidget extends StatelessWidget {
   const ListWidget(
       {Key? key, required this.games, required this.fav, required this.all})
       : super(key: key);
@@ -147,13 +251,8 @@ class ListWidget extends StatefulWidget {
   final List<Joc> all, fav;
 
   @override
-  _ListWidgetState createState() => _ListWidgetState();
-}
-
-class _ListWidgetState extends State<ListWidget> {
-  @override
   Widget build(BuildContext context) {
-    if (widget.games == null)
+    if (games == null)
       return Container(
           height: 200, child: Center(child: CircularProgressIndicator()));
     else
@@ -163,15 +262,15 @@ class _ListWidgetState extends State<ListWidget> {
         child: ListView(
           scrollDirection: Axis.horizontal,
           children: [
-            for (final game in widget.games!)
+            for (final game in games!)
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => GameDetailsScreen(
-                            joc: game, fav: widget.fav, all: widget.all),
+                        builder: (context) =>
+                            GameDetailsScreen(joc: game, fav: fav, all: all),
                       ),
                     );
                   },

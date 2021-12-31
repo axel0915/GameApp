@@ -14,8 +14,8 @@ class HomeNavigatorBar extends StatefulWidget {
 
 class _HomeNavigatorBarState extends State<HomeNavigatorBar> {
   int _selectedIndex = 0;
-  List<Joc> llista_de_prova = [];
-  List<Joc> llistafavorits_de_prova = [];
+  List<Joc> llista_de_prova = []; //ELIMINAR ESTO
+  List<Joc> llistafavorits_de_prova = []; //ELIMINAR ESTO
 
   void _onItemTapped(int index) {
     setState(() {
