@@ -6,10 +6,8 @@ import 'package:projecte/widgets/Joc.dart';
 
 class GameDetailsScreen extends StatefulWidget {
   final Joc joc;
-  final List<Joc> all, fav; //ESO SE ELIMINARÁ
-  const GameDetailsScreen(
-      {Key? key, required this.joc, required this.fav, required this.all})
-      : super(key: key);
+
+  const GameDetailsScreen({Key? key, required this.joc}) : super(key: key);
 
   @override
   _GameDetailsScreenState createState() => _GameDetailsScreenState();
@@ -24,14 +22,17 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
       appBar: AppBar(
         flexibleSpace: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(40),
-                  bottomRight: Radius.circular(40),
-                ),
-                image: DecorationImage(
-                  image: NetworkImage(widget.joc.background_image),
-                  fit: BoxFit.cover,
-                ))),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(40),
+            bottomRight: Radius.circular(40),
+          ),
+          image: DecorationImage(
+              image: widget.joc.background_image == null
+                  ? NetworkImage(
+                      "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg")
+                  : NetworkImage(widget.joc.background_image!),
+              fit: BoxFit.cover),
+        )),
         toolbarHeight: 300,
         shadowColor: Colors.black,
         shape: RoundedRectangleBorder(
@@ -45,8 +46,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
       body: Column(
         children: [
           Expanded(
-            child: DetailsContainer(
-                game: widget.joc, fav: widget.fav, all: widget.all),
+            child: DetailsContainer(game: widget.joc),
           ),
         ],
       ),
@@ -56,19 +56,24 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
 
 class DetailsContainer extends StatefulWidget {
   final Joc game;
-  final List<Joc> all, fav;
-  const DetailsContainer({
-    Key? key,
-    required this.game,
-    required this.fav,
-    required this.all,
-  }) : super(key: key);
+
+  const DetailsContainer({Key? key, required this.game}) : super(key: key);
 
   @override
   State<DetailsContainer> createState() => _DetailsContainerState();
 }
 
 class _DetailsContainerState extends State<DetailsContainer> {
+  dynamic? details;
+
+  @override
+  void initState() {
+    super.initState();
+    loadDetails(widget.game.slug!).then((result) {
+      setState(() => details = result);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -86,7 +91,12 @@ class _DetailsContainerState extends State<DetailsContainer> {
                         fontSize: 35,
                         color: Colors.white,
                         fontWeight: FontWeight.bold)),
-                Text(widget.game.tba! ? "TBA" : widget.game.released,
+                Text(
+                    widget.game.tba!
+                        ? "TBA"
+                        : widget.game.released == null
+                            ? "-"
+                            : widget.game.released!,
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 20, color: Colors.white30)),
                 Padding(
@@ -116,7 +126,7 @@ class _DetailsContainerState extends State<DetailsContainer> {
                 SizedBox(height: 10),
                 Center(
                     child: Text(
-                  "Description",
+                  details['description'],
                   style: TextStyle(color: Colors.white),
                 )),
                 SizedBox(height: 10),
@@ -182,7 +192,9 @@ class _DetailsContainerState extends State<DetailsContainer> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(8),
                                   child: Text(
-                                    platform.name,
+                                    platform.name == null
+                                        ? "-"
+                                        : platform.name!,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15,

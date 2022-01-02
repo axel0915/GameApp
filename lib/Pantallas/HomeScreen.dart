@@ -5,13 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:projecte/Pantallas/GameDetailsScreen.dart';
+import 'package:projecte/Pantallas/SearchScreen.dart';
 import 'package:projecte/widgets/Joc.dart';
 
 class HomeScreen extends StatefulWidget {
-  final List<Joc> all, fav; //ELIMINAR ESTO
-
-  const HomeScreen({Key? key, required this.all, required this.fav})
-      : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -60,7 +58,16 @@ class _HomeScreenState extends State<HomeScreen> {
           actions: [
             Padding(
               padding: const EdgeInsets.all(20),
-              child: Icon(Icons.search_rounded, size: 30),
+              child: GestureDetector(
+                child: Icon(Icons.search_rounded, size: 30),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => SearchScreen(),
+                    ),
+                  );
+                },
+              ),
             )
           ],
           automaticallyImplyLeading: false,
@@ -84,171 +91,148 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Colors.grey[900],
         ),
         backgroundColor: Colors.grey[850],
-        body: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SizedBox(
-                      height: 100,
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 5, top: 10, bottom: 5),
-                      child: Text(
-                        'Last games:',
-                        style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    ListWidget(
-                        games: lastgames, fav: widget.fav, all: widget.all),
-                    SizedBox(height: 5),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 5, top: 10, bottom: 5),
-                      child: Text(
-                        'Coming soon:',
-                        style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    ListWidget(
-                        games: nextgames, all: widget.all, fav: widget.fav),
-                    SizedBox(height: 5),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 5, top: 10, bottom: 5),
-                      child: Text(
-                        'For you:',
-                        style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    ListWidget(
-                        games: yourgames, all: widget.all, fav: widget.fav),
-                    SizedBox(height: 5),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 5, top: 10, bottom: 5),
-                      child: Text(
-                        'Nintendo games:',
-                        style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    ListWidget(
-                        games: Nintendogames, all: widget.all, fav: widget.fav),
-                    SizedBox(height: 5),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 5, top: 10, bottom: 5),
-                      child: Text(
-                        'Xbox games:',
-                        style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    ListWidget(
-                        games: Xboxgames, all: widget.all, fav: widget.fav),
-                    SizedBox(height: 5),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 5, top: 10, bottom: 5),
-                      child: Text(
-                        'Playstation games:',
-                        style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    ListWidget(
-                        games: Sonygames, all: widget.all, fav: widget.fav),
-                    SizedBox(height: 5),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 5, top: 10, bottom: 5),
-                      child: Text(
-                        'Top 2021:',
-                        style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    ListWidget(
-                        games: ratinggames, all: widget.all, fav: widget.fav),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ));
+        body: GamesColumn(
+            lastgames: lastgames,
+            nextgames: nextgames,
+            yourgames: yourgames,
+            Nintendogames: Nintendogames,
+            Xboxgames: Xboxgames,
+            Sonygames: Sonygames,
+            ratinggames: ratinggames,
+            widget: widget));
   }
 }
 
-class AppBarcaca extends StatelessWidget {
-  const AppBarcaca({
+class GamesColumn extends StatelessWidget {
+  const GamesColumn({
     Key? key,
+    required this.lastgames,
+    required this.widget,
+    required this.nextgames,
+    required this.yourgames,
+    required this.Nintendogames,
+    required this.Xboxgames,
+    required this.Sonygames,
+    required this.ratinggames,
   }) : super(key: key);
+
+  final List<Joc>? lastgames;
+  final HomeScreen widget;
+  final List<Joc>? nextgames;
+  final List<Joc>? yourgames;
+  final List<Joc>? Nintendogames;
+  final List<Joc>? Xboxgames;
+  final List<Joc>? Sonygames;
+  final List<Joc>? ratinggames;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(color: Colors.black, spreadRadius: 5, blurRadius: 5)
-        ],
-        color: Colors.grey[900],
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(40),
-          bottomRight: Radius.circular(40),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 20, top: 40),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Text(
-                'GameApp',
-                style: TextStyle(
-                    fontSize: 30,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
-              ),
+    return Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  height: 100,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 5, top: 10, bottom: 5),
+                  child: Text(
+                    'Last games:',
+                    style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                ListWidget(games: lastgames),
+                SizedBox(height: 5),
+                Padding(
+                  padding: const EdgeInsets.only(left: 5, top: 10, bottom: 5),
+                  child: Text(
+                    'Coming soon:',
+                    style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                ListWidget(games: nextgames),
+                SizedBox(height: 5),
+                Padding(
+                  padding: const EdgeInsets.only(left: 5, top: 10, bottom: 5),
+                  child: Text(
+                    'For you:',
+                    style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                ListWidget(games: yourgames),
+                SizedBox(height: 5),
+                Padding(
+                  padding: const EdgeInsets.only(left: 5, top: 10, bottom: 5),
+                  child: Text(
+                    'Nintendo games:',
+                    style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                ListWidget(games: Nintendogames),
+                SizedBox(height: 5),
+                Padding(
+                  padding: const EdgeInsets.only(left: 5, top: 10, bottom: 5),
+                  child: Text(
+                    'Xbox games:',
+                    style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                ListWidget(games: Xboxgames),
+                SizedBox(height: 5),
+                Padding(
+                  padding: const EdgeInsets.only(left: 5, top: 10, bottom: 5),
+                  child: Text(
+                    'Playstation games:',
+                    style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                ListWidget(games: Sonygames),
+                SizedBox(height: 5),
+                Padding(
+                  padding: const EdgeInsets.only(left: 5, top: 10, bottom: 5),
+                  child: Text(
+                    'Top 2021:',
+                    style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                ListWidget(games: ratinggames),
+              ],
             ),
-            Spacer(),
-            Icon(Icons.search)
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
 
 class ListWidget extends StatelessWidget {
-  const ListWidget(
-      {Key? key, required this.games, required this.fav, required this.all})
-      : super(key: key);
+  const ListWidget({Key? key, required this.games}) : super(key: key);
 
   final List<Joc>? games;
-  final List<Joc> all, fav;
 
   @override
   Widget build(BuildContext context) {
@@ -269,24 +253,27 @@ class ListWidget extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) =>
-                            GameDetailsScreen(joc: game, fav: fav, all: all),
+                        builder: (context) => GameDetailsScreen(joc: game),
                       ),
                     );
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black,
-                            spreadRadius: 0,
-                            blurRadius: 5,
-                          )
-                        ],
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        image: DecorationImage(
-                            image: NetworkImage(game.background_image),
-                            fit: BoxFit.cover)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          spreadRadius: 0,
+                          blurRadius: 5,
+                        )
+                      ],
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      image: DecorationImage(
+                          image: game.background_image == null
+                              ? NetworkImage(
+                                  "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg")
+                              : NetworkImage(game.background_image!),
+                          fit: BoxFit.cover),
+                    ),
                     width: 200,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -13,7 +13,7 @@ class Screenshots {
 }
 
 class Platforms {
-  String name;
+  String? name;
 
   Platforms(this.name);
 
@@ -34,7 +34,8 @@ class Joc {
   List<Platforms>? platform;
   List<Genres>? genre;
   bool? tba;
-  String name, slug, background_image, released;
+  String name;
+  String? slug, released, background_image;
   int? metacritic;
 
   Joc(this.name, this.genre, this.slug, this.background_image, this.released,
@@ -172,4 +173,36 @@ Future<List<Joc>> loadyourGames(String genre) async {
   final json = jsonDecode(response.body);
   List jocs = json["results"];
   return jocs.map((jsonJoc) => Joc.fromJson(jsonJoc)).toList();
+}
+
+Future<List<Joc>> loadSearchGames(String search) async {
+  final uri = Uri(
+    scheme: "https",
+    host: "api.rawg.io",
+    path: "/api/games",
+    queryParameters: {
+      'key': API_KEY,
+      'ordering': "-released, -metacritic, -rating",
+      'search_precise': "true",
+      'search': "$search",
+    },
+  );
+  final response = await http.get(uri);
+  final json = jsonDecode(response.body);
+  List jocs = json["results"];
+  return jocs.map((jsonJoc) => Joc.fromJson(jsonJoc)).toList();
+}
+
+Future<dynamic> loadDetails(String name) async {
+  final uri = Uri(
+    scheme: "https",
+    host: "api.rawg.io",
+    path: "/api/games/$name",
+    queryParameters: {
+      'key': API_KEY,
+    },
+  );
+  final response = await http.get(uri);
+  final json = jsonDecode(response.body);
+  return json["results"];
 }

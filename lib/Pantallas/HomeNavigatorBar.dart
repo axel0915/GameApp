@@ -14,8 +14,6 @@ class HomeNavigatorBar extends StatefulWidget {
 
 class _HomeNavigatorBarState extends State<HomeNavigatorBar> {
   int _selectedIndex = 0;
-  List<Joc> llista_de_prova = []; //ELIMINAR ESTO
-  List<Joc> llistafavorits_de_prova = []; //ELIMINAR ESTO
 
   void _onItemTapped(int index) {
     setState(() {
@@ -25,9 +23,9 @@ class _HomeNavigatorBarState extends State<HomeNavigatorBar> {
 
   Widget _centralWidget() {
     if (_selectedIndex == 0) {
-      return HomeScreen(fav: llistafavorits_de_prova, all: llista_de_prova);
+      return HomeScreen();
     } else if (_selectedIndex == 1) {
-      return LibraryScreen(fav: llistafavorits_de_prova, all: llista_de_prova);
+      return LibraryScreen();
     } else {
       return const Icon(Icons.shopping_cart);
     }
