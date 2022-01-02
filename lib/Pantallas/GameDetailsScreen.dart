@@ -126,7 +126,7 @@ class _DetailsContainerState extends State<DetailsContainer> {
                 SizedBox(height: 10),
                 Center(
                     child: Text(
-                  details['description'],
+                  "Descripcion",
                   style: TextStyle(color: Colors.white),
                 )),
                 SizedBox(height: 10),
