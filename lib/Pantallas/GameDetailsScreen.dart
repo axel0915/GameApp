@@ -1,5 +1,7 @@
 // ignore_for_file: file_names, prefer_const_constructors, curly_braces_in_flow_control_structures
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:projecte/widgets/Joc.dart';
@@ -64,13 +66,17 @@ class DetailsContainer extends StatefulWidget {
 }
 
 class _DetailsContainerState extends State<DetailsContainer> {
-  dynamic? details;
+  Detalls? details;
+  List<Joc>? similargames;
 
   @override
   void initState() {
     super.initState();
     loadDetails(widget.game.slug!).then((result) {
       setState(() => details = result);
+    });
+    loadyourGames(widget.game.genre![0].name).then((result) {
+      setState(() => similargames = result);
     });
   }
 
@@ -91,6 +97,9 @@ class _DetailsContainerState extends State<DetailsContainer> {
                         fontSize: 35,
                         color: Colors.white,
                         fontWeight: FontWeight.bold)),
+                Text((details != null ? "${details!.developers}" : "-"),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20, color: Colors.white)),
                 Text(
                     widget.game.tba!
                         ? "TBA"
@@ -126,14 +135,15 @@ class _DetailsContainerState extends State<DetailsContainer> {
                 SizedBox(height: 10),
                 Center(
                     child: Text(
-                  "Descripcion",
+                  (details != null ? "${details!.description}" : "-"),
                   style: TextStyle(color: Colors.white),
+                  textAlign: TextAlign.justify,
                 )),
                 SizedBox(height: 10),
                 ListScreenshots(game: widget.game),
                 SizedBox(height: 10),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
                       "Genre:",
@@ -203,13 +213,126 @@ class _DetailsContainerState extends State<DetailsContainer> {
                                 )),
                           )
                       ],
-                    )
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      'Similar games:',
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    ListWidget(games: similargames),
                   ],
                 ),
               ],
             ),
           ),
         ));
+  }
+}
+
+class ListWidget extends StatelessWidget {
+  const ListWidget({Key? key, required this.games}) : super(key: key);
+
+  final List<Joc>? games;
+
+  @override
+  Widget build(BuildContext context) {
+    if (games == null)
+      return Container(
+          height: 200, child: Center(child: CircularProgressIndicator()));
+    else
+      return Container(
+        width: 75,
+        height: 225,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: [
+            for (final game in games!)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => GameDetailsScreen(joc: game),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          spreadRadius: 0,
+                          blurRadius: 5,
+                        )
+                      ],
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      image: DecorationImage(
+                          image: game.background_image == null
+                              ? NetworkImage(
+                                  "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg")
+                              : NetworkImage(game.background_image!),
+                          fit: BoxFit.cover),
+                    ),
+                    width: 200,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  (game.metacritic != null
+                                      ? "${game.metacritic}"
+                                      : "-"),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                                SizedBox(width: 2),
+                                Container(
+                                  height: 20,
+                                  width: 20,
+                                  child: Image.network(
+                                    "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Metacritic.svg/1024px-Metacritic.svg.png",
+                                  ),
+                                ),
+                              ]),
+                        ),
+                        Container(
+                          height: 50,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10)),
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                          child: Center(
+                            child: Text(
+                              game.name,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+          ],
+        ),
+      );
   }
 }
 

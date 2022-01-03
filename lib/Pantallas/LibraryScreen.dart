@@ -12,7 +12,9 @@ class LibraryScreen extends StatefulWidget {
 }
 
 class _LibraryScreenState extends State<LibraryScreen> {
+  late String titol = "All games";
   late bool mode_favorit = false;
+  late bool mode_wishlist = false;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
+                        titol = "All games";
                         mode_favorit = false;
+                        mode_wishlist = false;
                       });
                     },
                     child: Container(
@@ -34,7 +38,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
                         color: Colors.transparent,
                       ),
                       child: Icon(
-                        (mode_favorit ? Icons.games_outlined : Icons.games),
+                        (mode_favorit || mode_wishlist
+                            ? Icons.games_outlined
+                            : Icons.games),
                         size: 30,
                         color: Colors.white,
                       ),
@@ -45,7 +51,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
+                        titol = "Favorit games";
                         mode_favorit = true;
+                        mode_wishlist = false;
                       });
                     },
                     child: Container(
@@ -63,6 +71,31 @@ class _LibraryScreenState extends State<LibraryScreen> {
                     ),
                   ),
                 ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        titol = "Wishlist";
+                        mode_favorit = false;
+                        mode_wishlist = true;
+                      });
+                    },
+                    child: Container(
+                      height: 65,
+                      decoration: BoxDecoration(
+                        border: Border(
+                            left: BorderSide(color: Colors.grey, width: 1)),
+                        color: Colors.transparent,
+                      ),
+                      child: Icon(
+                        Icons.add_shopping_cart_rounded,
+                        size: 30,
+                        color:
+                            (mode_wishlist ? Colors.amberAccent : Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
             preferredSize: Size.fromHeight(65)),
@@ -76,7 +109,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
           ),
         ),
         title: Text(
-          mode_favorit ? "Favorits" : "All",
+          titol,
           style: TextStyle(
             fontSize: 30,
             color: Colors.white,

@@ -26,7 +26,7 @@ class Genres {
 
   Genres(this.name);
 
-  Genres.fromJson(Map<String, dynamic> json) : name = json["name"];
+  Genres.fromJson(Map<String, dynamic> json) : name = json["slug"];
 }
 
 class Joc {
@@ -193,7 +193,17 @@ Future<List<Joc>> loadSearchGames(String search) async {
   return jocs.map((jsonJoc) => Joc.fromJson(jsonJoc)).toList();
 }
 
-Future<dynamic> loadDetails(String name) async {
+class Detalls {
+  String? description, developers;
+
+  Detalls(this.description, this.developers);
+
+  Detalls.fromJson(Map<String, dynamic> json)
+      : description = json["description_raw"],
+        developers = json["developers"][0]["name"];
+}
+
+Future<Detalls> loadDetails(String name) async {
   final uri = Uri(
     scheme: "https",
     host: "api.rawg.io",
@@ -204,5 +214,5 @@ Future<dynamic> loadDetails(String name) async {
   );
   final response = await http.get(uri);
   final json = jsonDecode(response.body);
-  return json["results"];
+  return Detalls.fromJson(json);
 }
