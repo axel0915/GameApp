@@ -6,7 +6,7 @@ class UserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: 70,
         shadowColor: Colors.black,
@@ -26,28 +26,40 @@ class UserScreen extends StatelessWidget {
         ),
         centerTitle: true,
         backgroundColor: Colors.grey[900],
-      ),
-            
-      backgroundColor: Colors.grey[850],
+      ),*/
+
+      //backgroundColor: Colors.grey[850],
       body: Container(
         decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/home_screen2.png"),
-                    colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.6), BlendMode.darken),
-                    fit: BoxFit.cover)),
+            image: DecorationImage(
+                image: AssetImage("assets/home_screen2.png"),
+                colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.6), BlendMode.darken),
+                fit: BoxFit.cover)),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(35, 25, 25, 10),
+          padding: const EdgeInsets.fromLTRB(35, 35, 25, 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Icon(
-                  Icons.person_rounded,
-                  size: 50,
-                  color: Colors.white,
-                ),
+              Row(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Icon(
+                      Icons.person_rounded,
+                      size: 50,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Text(
+                    "User",
+                    style: TextStyle(
+                      fontSize: 35,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
               SizedBox(height: 50),
               UserDataContainer(
@@ -61,6 +73,8 @@ class UserScreen extends StatelessWidget {
               SizedBox(height: 200),
               RaisedButton(
                 onPressed: (/*logout*/) {},
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
