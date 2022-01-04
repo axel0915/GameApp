@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:projecte/Pantallas/HomeScreen.dart';
 import 'package:projecte/Pantallas/LibraryScreen.dart';
 import 'package:projecte/widgets/Joc.dart';
+import 'package:projecte/Pantallas/UserScreen.dart';
 
 class HomeNavigatorBar extends StatefulWidget {
   const HomeNavigatorBar({Key? key}) : super(key: key);
@@ -27,7 +28,7 @@ class _HomeNavigatorBarState extends State<HomeNavigatorBar> {
     } else if (_selectedIndex == 1) {
       return LibraryScreen();
     } else {
-      return const Icon(Icons.shopping_cart);
+      return UserScreen();
     }
   }
 

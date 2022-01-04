@@ -124,6 +124,7 @@ class GamesColumn extends StatelessWidget {
   final List<Joc>? Xboxgames;
   final List<Joc>? Sonygames;
   final List<Joc>? ratinggames;
+  
 
   @override
   Widget build(BuildContext context) {
