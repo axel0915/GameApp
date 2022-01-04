@@ -117,9 +117,20 @@ class SignUpContainer extends StatelessWidget {
             ),
             TextField(
               decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: "Enter your email"),
+                fillColor: Colors.white,
+                filled: true,
+                hintText: "Enter your email",
+                suffix: GestureDetector(
+                  child: Icon(
+                    Icons.close,
+                    size: 20,
+                    color: Colors.grey,
+                  ),
+                  onTap: () {
+                    controller_nom.clear();
+                  },
+                ),
+              ),
               controller: controller_nom,
             ),
             SizedBox(height: 10),
@@ -135,9 +146,20 @@ class SignUpContainer extends StatelessWidget {
             ),
             TextField(
               decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: "Enter your password"),
+                fillColor: Colors.white,
+                filled: true,
+                hintText: "Enter your password",
+                suffix: GestureDetector(
+                  child: Icon(
+                    Icons.close,
+                    size: 20,
+                    color: Colors.grey,
+                  ),
+                  onTap: () {
+                    controller_contrasenya.clear();
+                  },
+                ),
+              ),
               controller: controller_contrasenya,
             ),
             SizedBox(
