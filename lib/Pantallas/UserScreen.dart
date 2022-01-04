@@ -27,45 +27,54 @@ class UserScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.grey[900],
       ),
+            
       backgroundColor: Colors.grey[850],
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(35, 10, 25, 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Icon(
-                Icons.person_rounded,
-                size: 50,
-                color: Colors.white,
+      body: Container(
+        decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/home_screen2.png"),
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.6), BlendMode.darken),
+                    fit: BoxFit.cover)),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(35, 25, 25, 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Icon(
+                  Icons.person_rounded,
+                  size: 50,
+                  color: Colors.white,
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            UserDataContainer(
-              texto: "User's Name",
-            ),
-            UserDataContainer(
-              texto: "Email",
-            ),
-            UserDataNumContainer(text: "Games", num: 10),
-            UserDataNumContainer(text: "Favorites", num: 7),
-            SizedBox(height: 200),
-            RaisedButton(
-              onPressed: (/*logout*/) {},
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "Log out",
-                    style: TextStyle(fontSize: 25),
-                  ),
-                  SizedBox(width: 10),
-                  Icon(Icons.logout_rounded),
-                ],
+              SizedBox(height: 50),
+              UserDataContainer(
+                texto: "User's Name",
               ),
-            ),
-          ],
+              UserDataContainer(
+                texto: "Email",
+              ),
+              UserDataNumContainer(text: "Games", num: 10),
+              UserDataNumContainer(text: "Favorites", num: 7),
+              SizedBox(height: 200),
+              RaisedButton(
+                onPressed: (/*logout*/) {},
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Log out",
+                      style: TextStyle(fontSize: 25),
+                    ),
+                    SizedBox(width: 10),
+                    Icon(Icons.logout_rounded),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
