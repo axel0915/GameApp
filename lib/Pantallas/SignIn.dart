@@ -136,7 +136,7 @@ class SignInContainer extends StatelessWidget {
             controller: password,
           ),
           SizedBox(
-            height: 5,
+            height: 30,
           ),
           Center(
             child: ElevatedButton(
@@ -154,7 +154,7 @@ class SignInContainer extends StatelessWidget {
             child: Text("Don't have an account?",
                 style: TextStyle(color: Colors.white, fontSize: 17)),
           ),
-          SizedBox(height: 5),
+          SizedBox(height: 20),
           Center(
             child: ElevatedButton(
               onPressed: () {

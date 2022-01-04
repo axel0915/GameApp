@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutterfire_ui/auth.dart';
+import 'package:projecte/Pantallas/Signin.dart';
 
 class UserScreen extends StatelessWidget {
   late String titol = "USER";
@@ -72,7 +74,13 @@ class UserScreen extends StatelessWidget {
               UserDataNumContainer(text: "Favorites", num: 7),
               SizedBox(height: 200),
               RaisedButton(
-                onPressed: (/*logout*/) {},
+                onPressed: (/*logout*/) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => (SignIn()),
+                    ),
+                  );
+                },
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(20))),
                 child: Row(
