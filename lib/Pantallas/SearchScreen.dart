@@ -58,7 +58,16 @@ class _SearchScreenState extends State<SearchScreen> {
                   decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
-                      hintText: "Search..."),
+                      hintText: "Search...",
+                      suffix: GestureDetector(
+                child: Icon(
+                  Icons.close,
+                  size: 20,
+                  color: Colors.grey,
+                ),
+                onTap: () {
+                  search_controller.clear();
+                },),),
                   controller: search_controller,
                 ),
               ),
