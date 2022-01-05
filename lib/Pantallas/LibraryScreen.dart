@@ -1,5 +1,7 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, non_constant_identifier_names
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projecte/Pantallas/GameDetailsScreen.dart';
 import 'package:projecte/widgets/Joc.dart';
@@ -12,9 +14,42 @@ class LibraryScreen extends StatefulWidget {
 }
 
 class _LibraryScreenState extends State<LibraryScreen> {
-  late String titol = "All games";
-  late bool mode_favorit = false;
-  late bool mode_wishlist = false;
+  String titol = "All games";
+  List<Joc>? llibreria = [];
+  List<Joc>? favorits = [];
+  bool mode_favorit = false;
+  bool mode_wishlist = false;
+
+  List<Joc>? llista;
+
+  @override
+  void initState() {
+    super.initState();
+    llista = llibreria;
+    final db = FirebaseFirestore.instance;
+    db
+        .collection(
+            "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Favorits")
+        .get()
+        .then((value) {
+      for (var element in value.docs) {
+        setState(() {
+          favorits!.add(Joc.fromMap(element.data()));
+        });
+      }
+    });
+    db
+        .collection(
+            "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Llibreria")
+        .get()
+        .then((value) {
+      for (var element in value.docs) {
+        setState(() {
+          llibreria!.add(Joc.fromMap(element.data()));
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +63,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                     onTap: () {
                       setState(() {
                         titol = "All games";
+                        llista = llibreria;
                         mode_favorit = false;
                         mode_wishlist = false;
                       });
@@ -52,6 +88,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                     onTap: () {
                       setState(() {
                         titol = "Favorit games";
+                        llista = favorits;
                         mode_favorit = true;
                         mode_wishlist = false;
                       });
@@ -120,102 +157,99 @@ class _LibraryScreenState extends State<LibraryScreen> {
         backgroundColor: Colors.grey[900],
       ),
       backgroundColor: Colors.grey[850],
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GridView.builder(
-          gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-          itemBuilder: (context, index) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      /*                    Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => GameDetailsScreen(
-                              joc: ),
-                        ),
-                      );*/
-                    });
-                  },
-                  child: Container(
-                    height: 200,
-                    width: 200,
-                    decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black,
-                            spreadRadius: 0,
-                            blurRadius: 5,
-                          )
-                        ],
-                        /*image: DecorationImage(
-                            image: NetworkImage(mode_favorit
-                                ? widget.fav[index].background_image
-                                : widget.all[index].background_image),
-                            fit: BoxFit.cover),*/
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  /*
-                                  if (mode_favorit) {
-                                    widget.fav.remove(widget.fav[index]);
-                                  } else {
-                                    widget.all.remove(widget.all[index]);
-                                  }
-                                */
-                                });
-                              },
-                              child: Icon(Icons.cancel_outlined)),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            height: 50,
-                            width: 200,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(20),
-                                  bottomRight: Radius.circular(20)),
-                              color: Colors.black.withOpacity(0.5),
-                            ),
-                            child: Center(
-                              child: Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: Text(
-                                      "Game_title" /*
-                                    mode_favorit
-                                        ? widget.fav[index].name
-                                        : widget.all[index].name,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    */
-                                      )),
+      body: Library(llista: llista),
+    );
+  }
+
+  Padding Library({llista}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GridView.builder(
+        gridDelegate:
+            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemBuilder: (context, index) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    /*                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => GameDetailsScreen(
+                            joc: ),
+                      ),
+                    );*/
+                  });
+                },
+                child: Container(
+                  height: 200,
+                  width: 200,
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          spreadRadius: 0,
+                          blurRadius: 5,
+                        )
+                      ],
+                      image: DecorationImage(
+                          image: NetworkImage(llista[index].background_image!),
+                          fit: BoxFit.cover),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                /*
+                                if (mode_favorit) {
+                                  widget.fav.remove(widget.fav[index]);
+                                } else {
+                                  widget.all.remove(widget.all[index]);
+                                }
+                              */
+                              });
+                            },
+                            child: Icon(Icons.cancel_outlined)),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          height: 50,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20)),
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Text(llista[index].name,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  )),
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      )
+                    ],
                   ),
                 ),
               ),
-            );
-          },
-          itemCount:
-              10 /*mode_favorit ? widget.fav.length : widget.all.length*/,
-        ),
+            ),
+          );
+        },
+        itemCount: llista.length,
       ),
     );
   }

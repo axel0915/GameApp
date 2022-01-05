@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Joc>? Nintendogames;
   List<Joc>? Sonygames;
   List<Joc>? Xboxgames;
-  late List<Joc>? yourgames = [];
+  List<Joc>? yourgames = [];
   List<Joc>? nextgames;
   List<Joc>? ratinggames;
 

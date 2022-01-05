@@ -4,31 +4,6 @@ import 'dart:convert';
 import 'package:projecte/main.dart';
 import 'package:http/http.dart' as http;
 
-class Screenshots {
-  String image;
-
-  Screenshots(this.image);
-
-  Screenshots.fromJson(Map<String, dynamic> json) : image = json["image"];
-}
-
-class Platforms {
-  String? name;
-
-  Platforms(this.name);
-
-  Platforms.fromJson(Map<String, dynamic> json)
-      : name = json["platform"]["name"];
-}
-
-class Genres {
-  String name;
-
-  Genres(this.name);
-
-  Genres.fromJson(Map<String, dynamic> json) : name = json["slug"];
-}
-
 class Joc {
   List<Screenshots>? screenshots;
   List<Platforms>? platform;
@@ -56,6 +31,28 @@ class Joc {
         platform = (json["parent_platforms"] as List)
             .map((i) => Platforms.fromJson(i))
             .toList();
+
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> toReturn = {};
+    toReturn['name'] = name;
+    toReturn['slug'] = slug;
+    toReturn['tba'] = tba;
+    toReturn['released'] = released;
+    toReturn['metacritic'] = metacritic;
+    toReturn['background_image'] = background_image;
+    return toReturn;
+  }
+
+  Joc.fromMap(Map<dynamic, dynamic> document)
+      : name = document['name'],
+        slug = document['slug'],
+        tba = document['tba'],
+        released = document['released'],
+        metacritic = document['metacritic'],
+        background_image = document['background_image'],
+        screenshots = null,
+        platform = null,
+        genre = null;
 }
 
 Future<List<Joc>> loadlastGames() async {
@@ -215,4 +212,29 @@ Future<Detalls> loadDetails(String name) async {
   final response = await http.get(uri);
   final json = jsonDecode(response.body);
   return Detalls.fromJson(json);
+}
+
+class Screenshots {
+  String image;
+
+  Screenshots(this.image);
+
+  Screenshots.fromJson(Map<String, dynamic> json) : image = json["image"];
+}
+
+class Platforms {
+  String? name;
+
+  Platforms(this.name);
+
+  Platforms.fromJson(Map<String, dynamic> json)
+      : name = json["platform"]["name"];
+}
+
+class Genres {
+  String name;
+
+  Genres(this.name);
+
+  Genres.fromJson(Map<String, dynamic> json) : name = json["slug"];
 }

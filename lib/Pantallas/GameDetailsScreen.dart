@@ -1,9 +1,8 @@
 // ignore_for_file: file_names, prefer_const_constructors, curly_braces_in_flow_control_structures
 
-import 'dart:convert';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:projecte/widgets/Joc.dart';
 
 class GameDetailsScreen extends StatefulWidget {
@@ -16,12 +15,100 @@ class GameDetailsScreen extends StatefulWidget {
 }
 
 class _GameDetailsScreenState extends State<GameDetailsScreen> {
+  late bool doc1 = false;
+  late bool doc2 = false;
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection(
+            "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Llibreria")
+        .doc(widget.joc.name)
+        .get()
+        .then((doc) {
+      setState(() => doc.exists ? doc1 = true : doc1 = false);
+    });
+    FirebaseFirestore.instance
+        .collection(
+            "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Favorits")
+        .doc(widget.joc.name)
+        .get()
+        .then((doc) {
+      setState(() => doc.exists ? doc2 = true : doc2 = false);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[850],
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(40)),
+                      color: Colors.grey[900],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Icon(
+                          doc1 ? Icons.gamepad_rounded : Icons.gamepad_outlined,
+                          size: 30,
+                          color: Colors.white),
+                    ),
+                  ),
+                  onTap: () {
+                    setState(() {
+                      final db = FirebaseFirestore.instance;
+                      doc1 = true;
+                      db
+                          .collection(
+                              "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Llibreria")
+                          .doc(widget.joc.name)
+                          .set(widget.joc.toMap());
+                    });
+                  },
+                ),
+                GestureDetector(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(40)),
+                      color: Colors.grey[900],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Icon(
+                          doc2
+                              ? Icons.favorite_rounded
+                              : Icons.favorite_border_rounded,
+                          size: 30,
+                          color: Colors.red[900]),
+                    ),
+                  ),
+                  onTap: () {
+                    setState(() {
+                      doc2 = true;
+                      final db = FirebaseFirestore.instance;
+                      db
+                          .collection(
+                              "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Favorits")
+                          .doc(widget.joc.name)
+                          .set(widget.joc.toMap());
+                    });
+                  },
+                ),
+              ],
+            ),
+          )
+        ],
         flexibleSpace: Container(
             decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
