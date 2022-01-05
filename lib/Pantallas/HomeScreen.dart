@@ -3,7 +3,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:projecte/Pantallas/GameDetailsScreen.dart';
 import 'package:projecte/Pantallas/SearchScreen.dart';
 import 'package:projecte/widgets/Joc.dart';
@@ -20,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Joc>? Nintendogames;
   List<Joc>? Sonygames;
   List<Joc>? Xboxgames;
-  List<Joc>? yourgames;
+  late List<Joc>? yourgames = [];
   List<Joc>? nextgames;
   List<Joc>? ratinggames;
 
@@ -32,9 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     loadnextGames().then((result) {
       setState(() => nextgames = result);
-    });
-    loadyourGames("puzzle").then((result) {
-      setState(() => yourgames = result);
     });
     loadNintendoGames().then((result) {
       setState(() => Nintendogames = result);
@@ -53,53 +49,72 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: GestureDetector(
-                child: Icon(Icons.search_rounded, size: 30),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => SearchScreen(),
-                    ),
-                  );
-                },
-              ),
-            )
-          ],
-          automaticallyImplyLeading: false,
-          toolbarHeight: 70,
-          shadowColor: Colors.black,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: GestureDetector(
+              child: Icon(Icons.search_rounded, size: 30),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SearchScreen(),
+                  ),
+                );
+              },
             ),
+          )
+        ],
+        automaticallyImplyLeading: false,
+        toolbarHeight: 70,
+        shadowColor: Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(40),
+            bottomRight: Radius.circular(40),
           ),
-          title: Text(
-            "GameApp",
-            style: TextStyle(
-              fontSize: 30,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          centerTitle: true,
-          backgroundColor: Colors.grey[900],
         ),
-        backgroundColor: Colors.grey[850],
-        body: GamesColumn(
-            lastgames: lastgames,
-            nextgames: nextgames,
-            yourgames: yourgames,
-            Nintendogames: Nintendogames,
-            Xboxgames: Xboxgames,
-            Sonygames: Sonygames,
-            ratinggames: ratinggames,
-            widget: widget));
+        title: Text(
+          "GameApp",
+          style: TextStyle(
+            fontSize: 30,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.grey[900],
+      ),
+      backgroundColor: Colors.grey[850],
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .doc("/Usuaris/${FirebaseAuth.instance.currentUser!.uid}")
+            .snapshots(),
+        builder: (
+          BuildContext context,
+          AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot,
+        ) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+          final doc = snapshot.data!;
+          final data = doc.data()!;
+          loadyourGames("${data['genere_preferit']}").then((result) {
+            setState(() => yourgames = result);
+          });
+          return GamesColumn(
+              lastgames: lastgames,
+              nextgames: nextgames,
+              yourgames: yourgames,
+              Nintendogames: Nintendogames,
+              Xboxgames: Xboxgames,
+              Sonygames: Sonygames,
+              ratinggames: ratinggames,
+              widget: widget);
+        },
+      ),
+    );
   }
 }
 
@@ -124,7 +139,6 @@ class GamesColumn extends StatelessWidget {
   final List<Joc>? Xboxgames;
   final List<Joc>? Sonygames;
   final List<Joc>? ratinggames;
-  
 
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:projecte/Pantallas/SignIn.dart';
+import 'package:projecte/widgets/AuthGate.dart';
 
 late String API_KEY;
 
@@ -14,7 +15,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(
-    const MyApp(),
+    AuthGate(app: const MyApp()),
   );
 }
 

@@ -1,14 +1,17 @@
+// ignore_for_file: file_names, prefer_const_constructors, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterfire_ui/auth.dart';
-import 'package:projecte/Pantallas/Signin.dart';
 
 class UserScreen extends StatelessWidget {
-  late String titol = "USER";
+  const UserScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: 70,
         shadowColor: Colors.black,
@@ -18,19 +21,27 @@ class UserScreen extends StatelessWidget {
             bottomRight: Radius.circular(40),
           ),
         ),
-        title: Text(
-          titol,
-          style: TextStyle(
-            fontSize: 30,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
         centerTitle: true,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.person_rounded,
+              size: 40,
+              color: Colors.white,
+            ),
+            Text(
+              "User",
+              style: TextStyle(
+                fontSize: 30,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
         backgroundColor: Colors.grey[900],
-      ),*/
-
-      //backgroundColor: Colors.grey[850],
+      ),
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -43,46 +54,42 @@ class UserScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Row(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      Icons.person_rounded,
-                      size: 50,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  Text(
-                    "User",
-                    style: TextStyle(
-                      fontSize: 35,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 50),
-              UserDataContainer(
-                texto: "User's Name",
-              ),
-              UserDataContainer(
-                texto: "Email",
-              ),
-              UserDataNumContainer(text: "Games", num: 10),
-              UserDataNumContainer(text: "Favorites", num: 7),
-              SizedBox(height: 200),
-              RaisedButton(
-                onPressed: (/*logout*/) {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => (SignIn()),
-                    ),
+              SizedBox(height: 100),
+              StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .doc("/Usuaris/${FirebaseAuth.instance.currentUser!.uid}")
+                    .snapshots(),
+                builder: (
+                  BuildContext context,
+                  AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
+                      snapshot,
+                ) {
+                  if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  final doc = snapshot.data!;
+                  final data = doc.data()!;
+
+                  return Column(
+                    children: [
+                      UserDataContainer(
+                        texto:
+                            "${FirebaseAuth.instance.currentUser!.displayName}",
+                      ),
+                      UserDataContainer(
+                        texto: "${FirebaseAuth.instance.currentUser!.email}",
+                      ),
+                      UserDataNumContainer(text: "Games", num: 10),
+                      UserDataNumContainer(text: "Favorites", num: 7),
+                    ],
                   );
                 },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
+              ),
+              SizedBox(height: 200),
+              ElevatedButton(
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -138,10 +145,7 @@ class UserDataNumContainer extends StatelessWidget {
                   padding: const EdgeInsets.all(2.0),
                   child: Text(
                     '$num',
-                    style: TextStyle(
-                        fontSize: 15,
-                        //backgroundColor: Colors.grey,
-                        color: Colors.white),
+                    style: TextStyle(fontSize: 15, color: Colors.white),
                   ),
                 ),
               ),

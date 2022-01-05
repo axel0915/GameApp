@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, unnecessary_string_interpolations, non_constant_identifier_names, curly_braces_in_flow_control_structures
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projecte/Pantallas/HomeNavigatorBar.dart';
 
@@ -15,14 +16,14 @@ class _SignUpState extends State<SignUp> {
   late TextEditingController controller_nom, controller_contrasenya;
 
   List<String> ListaGeneros = [
-    "Action",
-    "Adventure",
-    "Strategy",
-    "Puzzle",
-    "Racing",
-    "Shooter",
-    "Sports",
-    "RPG"
+    "action",
+    "adventure",
+    "strategy",
+    "puzzle",
+    "racing",
+    "shooter",
+    "sports",
+    "rpg"
   ];
   List<String> ListaAssetsGeneros = [
     "http://www.universodestiny.com/wp-content/uploads/2014/11/destiny42.jpg",
@@ -180,27 +181,6 @@ class SignUpContainer extends StatelessWidget {
                   ListaAssetsGeneros: ListaAssetsGeneros,
                   ListaGeneros: ListaGeneros),
             ),
-            /*Spacer(),
-            StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .doc("/Usuaris/ExYheH7yzBNlS8VpcWgzSGAdGnq2")
-                  .snapshots(),
-              builder: (
-                BuildContext context,
-                AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
-                    snapshot,
-              ) {
-                if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                final doc = snapshot.data!;
-                final data = doc.data()!;
-                return Text(
-                  "${data['name']}, ${data['genere_preferit']}",
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                );
-              },
-            ),*/
             Padding(
               padding: const EdgeInsets.all(15),
               child: Align(
@@ -244,9 +224,16 @@ class GridGenres extends StatelessWidget {
       gridDelegate:
           SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemBuilder: (context, i) {
+        double opacity = 0.5;
         return Center(
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              final db = FirebaseFirestore.instance;
+
+              db
+                  .doc("/Usuaris/${FirebaseAuth.instance.currentUser!.uid}")
+                  .set({'genere_preferit': "${ListaGeneros[i]}"});
+            },
             child: Container(
                 height: 150,
                 width: 150,
@@ -261,7 +248,8 @@ class GridGenres extends StatelessWidget {
                     image: DecorationImage(
                         image: NetworkImage("${ListaAssetsGeneros[i]}"),
                         colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.5), BlendMode.darken),
+                            Colors.black.withOpacity(opacity),
+                            BlendMode.darken),
                         fit: BoxFit.cover),
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(20))),
