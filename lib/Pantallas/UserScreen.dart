@@ -15,6 +15,7 @@ class UserScreen extends StatefulWidget {
 class _UserScreenState extends State<UserScreen> {
   List<Joc>? llibreria = [];
   List<Joc>? favorits = [];
+  List<Joc>? wishlist = [];
 
   List<Joc>? llista;
 
@@ -42,6 +43,17 @@ class _UserScreenState extends State<UserScreen> {
       for (var element in value.docs) {
         setState(() {
           llibreria!.add(Joc.fromMap(element.data()));
+        });
+      }
+    });
+    db
+        .collection(
+            "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Wishlist")
+        .get()
+        .then((value) {
+      for (var element in value.docs) {
+        setState(() {
+          wishlist!.add(Joc.fromMap(element.data()));
         });
       }
     });
@@ -124,12 +136,15 @@ class _UserScreenState extends State<UserScreen> {
                       UserDataNumContainer(
                           text: "Favorites",
                           num: favorits == null ? 0 : favorits!.length),
+                      UserDataNumContainer(
+                          text: "Wishlist",
+                          num: wishlist == null ? 0 : wishlist!.length),
                     ],
                   );
                 },
               ),
               SizedBox(height: 200),
-              ElevatedButton(
+              RaisedButton(
                 onPressed: () {
                   FirebaseAuth.instance.signOut();
                 },

@@ -17,6 +17,7 @@ class GameDetailsScreen extends StatefulWidget {
 class _GameDetailsScreenState extends State<GameDetailsScreen> {
   late bool doc1 = false;
   late bool doc2 = false;
+  late bool doc3 = false;
 
   @override
   void initState() {
@@ -43,7 +44,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
         .doc(widget.joc.name)
         .get()
         .then((doc) {
-      setState(() => doc.exists ? doc2 = true : doc2 = false);
+      setState(() => doc.exists ? doc3 = true : doc3 = false);
     });
   }
 
@@ -122,16 +123,16 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Icon(
-                          doc2
-                              ? Icons.add_shopping_cart_outlined
-                              : Icons.add_shopping_cart_rounded,
+                          doc3
+                              ? Icons.shopping_cart_rounded
+                              : Icons.shopping_cart_outlined,
                           size: 30,
                           color: Colors.amberAccent),
                     ),
                   ),
                   onTap: () {
                     setState(() {
-                      doc2 = true;
+                      doc3 = true;
                       final db = FirebaseFirestore.instance;
                       db
                           .collection(

@@ -17,6 +17,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
   String titol = "All games";
   List<Joc>? llibreria = [];
   List<Joc>? favorits = [];
+  List<Joc>? wishlist = [];
+
   List<Joc>? llista;
   bool mode_favorit = false;
   bool mode_normal = true;
@@ -46,6 +48,17 @@ class _LibraryScreenState extends State<LibraryScreen> {
       for (var element in value.docs) {
         setState(() {
           llibreria!.add(Joc.fromMap(element.data()));
+        });
+      }
+    });
+    db
+        .collection(
+            "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Wishlist")
+        .get()
+        .then((value) {
+      for (var element in value.docs) {
+        setState(() {
+          wishlist!.add(Joc.fromMap(element.data()));
         });
       }
     });
@@ -113,9 +126,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
                     onTap: () {
                       setState(() {
                         titol = "Wishlist";
+                        mode_wishlist = true;
                         mode_favorit = false;
                         mode_normal = false;
-                        mode_wishlist = true;
                       });
                     },
                     child: Container(
@@ -126,10 +139,11 @@ class _LibraryScreenState extends State<LibraryScreen> {
                         color: Colors.transparent,
                       ),
                       child: Icon(
-                        Icons.add_shopping_cart_rounded,
+                        (mode_wishlist
+                            ? Icons.shopping_cart_rounded
+                            : Icons.shopping_cart_outlined),
                         size: 30,
-                        color:
-                            (mode_wishlist ? Colors.amberAccent : Colors.white),
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -214,12 +228,24 @@ class _LibraryScreenState extends State<LibraryScreen> {
                                         "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Favorits")
                                     .doc(llista![index].name)
                                     .delete();
-                              } else {
+                                db
+                                    .collection(
+                                        "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Wishlist")
+                                    .doc(llista![index].name)
+                                    .delete();
+                              } else if (mode_favorit) {
                                 db
                                     .collection(
                                         "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Favorits")
                                     .doc(llista![index].name)
                                     .delete();
+                              }else{
+                                db
+                                    .collection(
+                                        "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Wishlist")
+                                    .doc(llista![index].name)
+                                    .delete();
+
                               }
                               llista!.removeAt(index);
                             });
