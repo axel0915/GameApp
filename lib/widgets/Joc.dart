@@ -179,7 +179,7 @@ Future<List<Joc>> loadSearchGames(String search) async {
     path: "/api/games",
     queryParameters: {
       'key': API_KEY,
-      'ordering': "-released, -metacritic, -rating",
+      'ordering': "-metacritic",
       'search_precise': "true",
       'search': "$search",
     },

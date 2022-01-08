@@ -17,10 +17,10 @@ class _LibraryScreenState extends State<LibraryScreen> {
   String titol = "All games";
   List<Joc>? llibreria = [];
   List<Joc>? favorits = [];
-  bool mode_favorit = false;
-  bool mode_wishlist = false;
-
   List<Joc>? llista;
+  bool mode_favorit = false;
+  bool mode_normal = true;
+  bool mode_wishlist = false;
 
   @override
   void initState() {
@@ -64,6 +64,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                       setState(() {
                         titol = "All games";
                         llista = llibreria;
+                        mode_normal = true;
                         mode_favorit = false;
                         mode_wishlist = false;
                       });
@@ -74,9 +75,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                         color: Colors.transparent,
                       ),
                       child: Icon(
-                        (mode_favorit || mode_wishlist
-                            ? Icons.games_outlined
-                            : Icons.games),
+                        (!mode_normal ? Icons.games_outlined : Icons.games),
                         size: 30,
                         color: Colors.white,
                       ),
@@ -90,6 +89,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                         titol = "Favorit games";
                         llista = favorits;
                         mode_favorit = true;
+                        mode_normal = false;
                         mode_wishlist = false;
                       });
                     },
@@ -114,6 +114,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                       setState(() {
                         titol = "Wishlist";
                         mode_favorit = false;
+                        mode_normal = false;
                         mode_wishlist = true;
                       });
                     },
@@ -157,99 +158,107 @@ class _LibraryScreenState extends State<LibraryScreen> {
         backgroundColor: Colors.grey[900],
       ),
       backgroundColor: Colors.grey[850],
-      body: Library(llista: llista),
-    );
-  }
-
-  Padding Library({llista}) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: GridView.builder(
-        gridDelegate:
-            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemBuilder: (context, index) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    /*                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => GameDetailsScreen(
-                            joc: ),
-                      ),
-                    );*/
-                  });
-                },
-                child: Container(
-                  height: 200,
-                  width: 200,
-                  decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black,
-                          spreadRadius: 0,
-                          blurRadius: 5,
-                        )
-                      ],
-                      image: DecorationImage(
-                          image: NetworkImage(llista[index].background_image!),
-                          fit: BoxFit.cover),
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                /*
-                                if (mode_favorit) {
-                                  widget.fav.remove(widget.fav[index]);
-                                } else {
-                                  widget.all.remove(widget.all[index]);
-                                }
-                              */
-                              });
-                            },
-                            child: Icon(Icons.cancel_outlined)),
-                      ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          height: 50,
-                          width: 200,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(20),
-                                bottomRight: Radius.circular(20)),
-                            color: Colors.black.withOpacity(0.5),
-                          ),
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: Text(llista[index].name,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  )),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GridView.builder(
+          gridDelegate:
+              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          itemBuilder: (context, index) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              GameDetailsScreen(joc: llista![index]),
+                        ),
+                      );
+                    });
+                  },
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black,
+                            spreadRadius: 0,
+                            blurRadius: 5,
+                          )
+                        ],
+                        image: DecorationImage(
+                            image:
+                                NetworkImage(llista![index].background_image!),
+                            fit: BoxFit.cover),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              final db = FirebaseFirestore.instance;
+                              if (mode_normal) {
+                                db
+                                    .collection(
+                                        "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Llibreria")
+                                    .doc(llista![index].name)
+                                    .delete();
+                                db
+                                    .collection(
+                                        "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Favorits")
+                                    .doc(llista![index].name)
+                                    .delete();
+                              } else {
+                                db
+                                    .collection(
+                                        "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Favorits")
+                                    .doc(llista![index].name)
+                                    .delete();
+                              }
+                              llista!.removeAt(index);
+                            });
+                          },
+                          icon: Icon(Icons.cancel_outlined),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            height: 50,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(20),
+                                  bottomRight: Radius.circular(20)),
+                              color: Colors.black.withOpacity(0.5),
+                            ),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Text(llista![index].name,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    )),
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          );
-        },
-        itemCount: llista.length,
+            );
+          },
+          itemCount: llista!.length,
+        ),
       ),
     );
   }
