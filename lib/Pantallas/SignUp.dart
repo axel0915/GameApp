@@ -13,7 +13,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  late TextEditingController controller_nom, controller_contrasenya;
+  late TextEditingController controller_nom;
 
   List<String> ListaGeneros = [
     "action",
@@ -39,9 +39,6 @@ class _SignUpState extends State<SignUp> {
   @override
   void initState() {
     super.initState();
-    controller_contrasenya = TextEditingController(
-      text: "",
-    );
     controller_nom = TextEditingController(
       text: "",
     );
@@ -63,7 +60,6 @@ class _SignUpState extends State<SignUp> {
           ),
           SignUpContainer(
               controller_nom: controller_nom,
-              controller_contrasenya: controller_contrasenya,
               ListaAssetsGeneros: ListaAssetsGeneros,
               ListaGeneros: ListaGeneros)
         ],
@@ -76,13 +72,11 @@ class SignUpContainer extends StatelessWidget {
   const SignUpContainer({
     Key? key,
     required this.controller_nom,
-    required this.controller_contrasenya,
     required this.ListaAssetsGeneros,
     required this.ListaGeneros,
   }) : super(key: key);
 
   final TextEditingController controller_nom;
-  final TextEditingController controller_contrasenya;
   final List<String> ListaAssetsGeneros;
   final List<String> ListaGeneros;
 
@@ -98,7 +92,7 @@ class SignUpContainer extends StatelessWidget {
             SizedBox(height: 45),
             Center(
               child: Text(
-                "Sign up",
+                "Let's start!",
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 30,
@@ -107,7 +101,7 @@ class SignUpContainer extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              "User email: ",
+              "User nickname: ",
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -120,7 +114,7 @@ class SignUpContainer extends StatelessWidget {
               decoration: InputDecoration(
                 fillColor: Colors.white,
                 filled: true,
-                hintText: "Enter your email",
+                hintText: "Enter your nickname",
                 suffix: GestureDetector(
                   child: Icon(
                     Icons.close,
@@ -136,38 +130,7 @@ class SignUpContainer extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              "Password:",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            TextField(
-              decoration: InputDecoration(
-                fillColor: Colors.white,
-                filled: true,
-                hintText: "Enter your password",
-                suffix: GestureDetector(
-                  child: Icon(
-                    Icons.close,
-                    size: 20,
-                    color: Colors.grey,
-                  ),
-                  onTap: () {
-                    controller_contrasenya.clear();
-                  },
-                ),
-              ),
-              controller: controller_contrasenya,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              "Favourite genre:",
+              "Favorite genre:",
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -187,6 +150,11 @@ class SignUpContainer extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: ElevatedButton(
                   onPressed: () {
+                    final db = FirebaseFirestore.instance;
+                    db
+                        .doc(
+                            "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}")
+                        .update({'nom_usuari': "${controller_nom.text}"});
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => HomeNavigatorBar()));
                   },
@@ -223,6 +191,7 @@ class GridGenres extends StatefulWidget {
 }
 
 class _GridGenresState extends State<GridGenres> {
+<<<<<<< HEAD
   late bool _pulsado;
 
   @override
@@ -230,6 +199,9 @@ class _GridGenresState extends State<GridGenres> {
     _pulsado = false;
     super.initState();
   }
+=======
+  List<bool> opacity = [false, false, false, false, false, false, false, false];
+>>>>>>> 04a67f624f9dafa83d67461c7286f5e9aebce53f
 
   @override
   Widget build(BuildContext context) {
@@ -237,10 +209,10 @@ class _GridGenresState extends State<GridGenres> {
       gridDelegate:
           SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemBuilder: (context, i) {
-        double opacity = 0.5;
         return Center(
           child: GestureDetector(
             onTap: () {
+<<<<<<< HEAD
 
               if (_pulsado) {
                 final db = FirebaseFirestore.instance;
@@ -251,6 +223,24 @@ class _GridGenresState extends State<GridGenres> {
               }
               setState(() {
                 _pulsado = !_pulsado;
+=======
+              setState(() {
+                final db = FirebaseFirestore.instance;
+                opacity = [
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false
+                ];
+                opacity[i] = true;
+                db
+                    .doc("/Usuaris/${FirebaseAuth.instance.currentUser!.uid}")
+                    .set({'genere_preferit': "${widget.ListaGeneros[i]}"});
+>>>>>>> 04a67f624f9dafa83d67461c7286f5e9aebce53f
               });
             },
             child: Container(
@@ -267,7 +257,7 @@ class _GridGenresState extends State<GridGenres> {
                     image: DecorationImage(
                         image: NetworkImage("${widget.ListaAssetsGeneros[i]}"),
                         colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(opacity),
+                            Colors.black.withOpacity(opacity[i] ? 0 : 0.5),
                             BlendMode.darken),
                         fit: BoxFit.cover),
                     color: Colors.white,
