@@ -191,17 +191,7 @@ class GridGenres extends StatefulWidget {
 }
 
 class _GridGenresState extends State<GridGenres> {
-<<<<<<< HEAD
-  late bool _pulsado;
-
-  @override
-  void initState() {
-    _pulsado = false;
-    super.initState();
-  }
-=======
   List<bool> opacity = [false, false, false, false, false, false, false, false];
->>>>>>> 04a67f624f9dafa83d67461c7286f5e9aebce53f
 
   @override
   Widget build(BuildContext context) {
@@ -212,18 +202,6 @@ class _GridGenresState extends State<GridGenres> {
         return Center(
           child: GestureDetector(
             onTap: () {
-<<<<<<< HEAD
-
-              if (_pulsado) {
-                final db = FirebaseFirestore.instance;
-
-                db
-                    .doc("/Usuaris/${FirebaseAuth.instance.currentUser!.uid}")
-                    .set({'genere_preferit': "${widget.ListaGeneros[i]}"});
-              }
-              setState(() {
-                _pulsado = !_pulsado;
-=======
               setState(() {
                 final db = FirebaseFirestore.instance;
                 opacity = [
@@ -240,7 +218,6 @@ class _GridGenresState extends State<GridGenres> {
                 db
                     .doc("/Usuaris/${FirebaseAuth.instance.currentUser!.uid}")
                     .set({'genere_preferit': "${widget.ListaGeneros[i]}"});
->>>>>>> 04a67f624f9dafa83d67461c7286f5e9aebce53f
               });
             },
             child: Container(
@@ -249,7 +226,7 @@ class _GridGenresState extends State<GridGenres> {
                 decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                        color: (_pulsado ? Colors.black : Colors.amber),
+                        color: Colors.black,
                         spreadRadius: 0,
                         blurRadius: 5,
                       )
