@@ -25,7 +25,6 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         toolbarHeight: 70,
         shadowColor: Colors.black,
         shape: RoundedRectangleBorder(
@@ -56,18 +55,20 @@ class _SearchScreenState extends State<SearchScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
                   decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      hintText: "Search...",
-                      suffix: GestureDetector(
-                child: Icon(
-                  Icons.close,
-                  size: 20,
-                  color: Colors.grey,
-                ),
-                onTap: () {
-                  search_controller.clear();
-                },),),
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: "Search...",
+                    suffix: GestureDetector(
+                      child: Icon(
+                        Icons.close,
+                        size: 20,
+                        color: Colors.grey,
+                      ),
+                      onTap: () {
+                        search_controller.clear();
+                      },
+                    ),
+                  ),
                   controller: search_controller,
                 ),
               ),

@@ -3,9 +3,49 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:projecte/widgets/Joc.dart';
 
-class UserScreen extends StatelessWidget {
+class UserScreen extends StatefulWidget {
   const UserScreen({Key? key}) : super(key: key);
+
+  @override
+  State<UserScreen> createState() => _UserScreenState();
+}
+
+class _UserScreenState extends State<UserScreen> {
+  List<Joc>? llibreria = [];
+  List<Joc>? favorits = [];
+
+  List<Joc>? llista;
+
+  @override
+  void initState() {
+    super.initState();
+    llista = llibreria;
+    final db = FirebaseFirestore.instance;
+    db
+        .collection(
+            "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Favorits")
+        .get()
+        .then((value) {
+      for (var element in value.docs) {
+        setState(() {
+          favorits!.add(Joc.fromMap(element.data()));
+        });
+      }
+    });
+    db
+        .collection(
+            "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Llibreria")
+        .get()
+        .then((value) {
+      for (var element in value.docs) {
+        setState(() {
+          llibreria!.add(Joc.fromMap(element.data()));
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,14 +113,17 @@ class UserScreen extends StatelessWidget {
                   return Column(
                     children: [
                       UserDataContainer(
-                        texto:
-                            "${FirebaseAuth.instance.currentUser!.displayName}",
+                        texto: "${data['nom_usuari']}",
                       ),
                       UserDataContainer(
                         texto: "${FirebaseAuth.instance.currentUser!.email}",
                       ),
-                      UserDataNumContainer(text: "Games", num: 10),
-                      UserDataNumContainer(text: "Favorites", num: 7),
+                      UserDataNumContainer(
+                          text: "Games",
+                          num: llibreria == null ? 0 : llibreria!.length),
+                      UserDataNumContainer(
+                          text: "Favorites",
+                          num: favorits == null ? 0 : favorits!.length),
                     ],
                   );
                 },
