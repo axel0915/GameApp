@@ -208,7 +208,7 @@ class SignUpContainer extends StatelessWidget {
   }
 }
 
-class GridGenres extends StatelessWidget {
+class GridGenres extends StatefulWidget {
   const GridGenres({
     Key? key,
     required this.ListaAssetsGeneros,
@@ -217,6 +217,19 @@ class GridGenres extends StatelessWidget {
 
   final List<String> ListaAssetsGeneros;
   final List<String> ListaGeneros;
+
+  @override
+  State<GridGenres> createState() => _GridGenresState();
+}
+
+class _GridGenresState extends State<GridGenres> {
+  late bool _pulsado;
+
+  @override
+  void initState() {
+    _pulsado = false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -228,11 +241,17 @@ class GridGenres extends StatelessWidget {
         return Center(
           child: GestureDetector(
             onTap: () {
-              final db = FirebaseFirestore.instance;
 
-              db
-                  .doc("/Usuaris/${FirebaseAuth.instance.currentUser!.uid}")
-                  .set({'genere_preferit': "${ListaGeneros[i]}"});
+              if (_pulsado) {
+                final db = FirebaseFirestore.instance;
+
+                db
+                    .doc("/Usuaris/${FirebaseAuth.instance.currentUser!.uid}")
+                    .set({'genere_preferit': "${widget.ListaGeneros[i]}"});
+              }
+              setState(() {
+                _pulsado = !_pulsado;
+              });
             },
             child: Container(
                 height: 150,
@@ -240,13 +259,13 @@ class GridGenres extends StatelessWidget {
                 decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black,
+                        color: (_pulsado ? Colors.black : Colors.amber),
                         spreadRadius: 0,
                         blurRadius: 5,
                       )
                     ],
                     image: DecorationImage(
-                        image: NetworkImage("${ListaAssetsGeneros[i]}"),
+                        image: NetworkImage("${widget.ListaAssetsGeneros[i]}"),
                         colorFilter: ColorFilter.mode(
                             Colors.black.withOpacity(opacity),
                             BlendMode.darken),
@@ -254,7 +273,7 @@ class GridGenres extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(20))),
                 child: Center(
-                  child: Text("${ListaGeneros[i]}",
+                  child: Text("${widget.ListaGeneros[i]}",
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

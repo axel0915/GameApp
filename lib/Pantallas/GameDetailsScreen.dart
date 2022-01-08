@@ -37,6 +37,14 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
         .then((doc) {
       setState(() => doc.exists ? doc2 = true : doc2 = false);
     });
+    FirebaseFirestore.instance
+        .collection(
+            "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Wishlist")
+        .doc(widget.joc.name)
+        .get()
+        .then((doc) {
+      setState(() => doc.exists ? doc2 = true : doc2 = false);
+    });
   }
 
   @override
@@ -100,6 +108,34 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
                       db
                           .collection(
                               "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Favorits")
+                          .doc(widget.joc.name)
+                          .set(widget.joc.toMap());
+                    });
+                  },
+                ),
+                GestureDetector(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(40)),
+                      color: Colors.grey[900],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Icon(
+                          doc2
+                              ? Icons.add_shopping_cart_outlined
+                              : Icons.add_shopping_cart_rounded,
+                          size: 30,
+                          color: Colors.amberAccent),
+                    ),
+                  ),
+                  onTap: () {
+                    setState(() {
+                      doc2 = true;
+                      final db = FirebaseFirestore.instance;
+                      db
+                          .collection(
+                              "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Wishlist")
                           .doc(widget.joc.name)
                           .set(widget.joc.toMap());
                     });
