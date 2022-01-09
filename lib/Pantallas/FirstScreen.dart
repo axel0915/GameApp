@@ -1,9 +1,6 @@
-// ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
-
 import 'package:flutter/material.dart';
 import 'package:projecte/Pantallas/HomeNavigatorBar.dart';
 import 'package:projecte/Pantallas/SignUp.dart';
-import 'package:projecte/widgets/AuthGate.dart';
 
 class FirstScreen extends StatefulWidget {
   const FirstScreen({Key? key}) : super(key: key);

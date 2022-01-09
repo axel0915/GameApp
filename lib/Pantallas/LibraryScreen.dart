@@ -1,9 +1,6 @@
-// ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, non_constant_identifier_names
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:projecte/Pantallas/GameDetailsScreen.dart';
 import 'package:projecte/widgets/Joc.dart';
 
 class LibraryScreen extends StatefulWidget {
