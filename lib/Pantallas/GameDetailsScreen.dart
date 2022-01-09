@@ -104,11 +104,17 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
                   ),
                   onTap: () {
                     setState(() {
+                      doc1 = true;
                       doc2 = true;
                       final db = FirebaseFirestore.instance;
                       db
                           .collection(
                               "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Favorits")
+                          .doc(widget.joc.name)
+                          .set(widget.joc.toMap());
+                      db
+                          .collection(
+                              "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Llibreria")
                           .doc(widget.joc.name)
                           .set(widget.joc.toMap());
                     });

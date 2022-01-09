@@ -126,6 +126,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                     onTap: () {
                       setState(() {
                         titol = "Wishlist";
+                        llista = wishlist;
                         mode_wishlist = true;
                         mode_favorit = false;
                         mode_normal = false;
@@ -143,7 +144,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                             ? Icons.shopping_cart_rounded
                             : Icons.shopping_cart_outlined),
                         size: 30,
-                        color: Colors.white,
+                        color: Colors.amberAccent,
                       ),
                     ),
                   ),
@@ -181,103 +182,87 @@ class _LibraryScreenState extends State<LibraryScreen> {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              GameDetailsScreen(joc: llista![index]),
-                        ),
-                      );
-                    });
-                  },
-                  child: Container(
-                    height: 200,
-                    width: 200,
-                    decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black,
-                            spreadRadius: 0,
-                            blurRadius: 5,
-                          )
-                        ],
-                        image: DecorationImage(
-                            image:
-                                NetworkImage(llista![index].background_image!),
-                            fit: BoxFit.cover),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              final db = FirebaseFirestore.instance;
-                              if (mode_normal) {
-                                db
-                                    .collection(
-                                        "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Llibreria")
-                                    .doc(llista![index].name)
-                                    .delete();
-                                db
-                                    .collection(
-                                        "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Favorits")
-                                    .doc(llista![index].name)
-                                    .delete();
-                                db
-                                    .collection(
-                                        "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Wishlist")
-                                    .doc(llista![index].name)
-                                    .delete();
-                              } else if (mode_favorit) {
-                                db
-                                    .collection(
-                                        "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Favorits")
-                                    .doc(llista![index].name)
-                                    .delete();
-                              }else{
-                                db
-                                    .collection(
-                                        "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Wishlist")
-                                    .doc(llista![index].name)
-                                    .delete();
-
-                              }
-                              llista!.removeAt(index);
-                            });
-                          },
-                          icon: Icon(Icons.cancel_outlined),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            height: 50,
-                            width: 200,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(20),
-                                  bottomRight: Radius.circular(20)),
-                              color: Colors.black.withOpacity(0.5),
-                            ),
-                            child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: Text(llista![index].name,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    )),
-                              ),
-                            ),
-                          ),
+                child: Container(
+                  height: 200,
+                  width: 200,
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          spreadRadius: 0,
+                          blurRadius: 5,
                         )
                       ],
-                    ),
+                      image: DecorationImage(
+                          image: NetworkImage(llista![index].background_image!),
+                          fit: BoxFit.cover),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            final db = FirebaseFirestore.instance;
+                            if (mode_normal) {
+                              db
+                                  .collection(
+                                      "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Llibreria")
+                                  .doc(llista![index].name)
+                                  .delete();
+                              db
+                                  .collection(
+                                      "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Favorits")
+                                  .doc(llista![index].name)
+                                  .delete();
+                              favorits!.remove(llista![index]);
+                              llibreria!.remove(llista![index]);
+                            } else if (mode_favorit) {
+                              db
+                                  .collection(
+                                      "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Favorits")
+                                  .doc(llista![index].name)
+                                  .delete();
+                              favorits!.remove(llista![index]);
+                            } else {
+                              db
+                                  .collection(
+                                      "/Usuaris/${FirebaseAuth.instance.currentUser!.uid}/Wishlist")
+                                  .doc(llista![index].name)
+                                  .delete();
+                              wishlist!.remove(llista![index]);
+                            }
+                          });
+                        },
+                        icon: Icon(Icons.cancel_outlined),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          height: 50,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20)),
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Text(llista![index].name,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  )),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
