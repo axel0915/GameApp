@@ -233,7 +233,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
                             }
                           });
                         },
-                        icon: Icon(Icons.cancel_outlined),
+                        icon: Icon(Icons.cancel_outlined, color: Colors.white,),
+                        
                       ),
                       Align(
                         alignment: Alignment.bottomCenter,
